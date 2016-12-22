@@ -1,30 +1,63 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    //Resume[] storage = new Resume[10000];
 
-    void clear() {
-    }
+    List <Resume> storage = new ArrayList<>();
 
-    void save(Resume r) {
-    }
+    void clear()
+      {
+        storage.clear();
+      }
 
-    Resume get(String uuid) {
-        return null;
-    }
+    void save(Resume r)
+      {
+        storage.add(r);
+      }
 
-    void delete(String uuid) {
-    }
+    Resume get(String uuid)
+      {
+        Resume tmp = new Resume();
+          for (Resume item : storage)
+            {
+              if (item.uuid.equals(uuid))
+                {
+                  tmp = item;
+                }
+            }
+
+        return tmp;
+      }
+
+    void delete(String uuid)
+      {
+          Iterator<Resume> iter = storage.iterator();
+
+          while (iter.hasNext())
+            {
+              Resume item = iter.next();
+              if (item.uuid.equals(uuid))
+                {
+                  iter.remove();
+                }
+            }
+      }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    Resume[] getAll() {
-        return new Resume[0];
-    }
+    List <Resume> getAll()
+      {
+        return storage.subList(0, storage.size());
+      }
 
-    int size() {
-        return 0;
-    }
+    int size()
+      {
+        return storage.size();
+     }
 }
