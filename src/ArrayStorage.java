@@ -8,15 +8,26 @@ import java.util.List;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    int index = 0;
+    private int index = 0;
+    private int notNull = 0;
+
+    int getNotNullRecords ()
+      {
+        for (int i = 0; i <= this.storage.length - 1; i++)
+          {
+            if (this.storage [i] != null)
+              {
+                this.notNull ++;
+              }
+          }
+        return this.notNull;
+      }
 
     void clear()
       {
-        for (int i = 0; i <= index; i ++)
-          {
-            storage[i] = null;
-            index = 0;
-          }
+        storage = null;
+        index = 0;
+        notNull = 0;
       }
 
     void save(Resume r)
@@ -27,26 +38,26 @@ public class ArrayStorage {
 
     Resume get(String uuid)
       {
-        Resume tmp = new Resume();
-        for (int i = 0; i <= index - 1; i ++)
+        for (int i = 0; i <= notNull - 1; i ++)
           {
-            if (storage[i].uuid.equals(uuid))
+            if (storage [i].uuid == uuid)
               {
-                tmp = storage[i];
+                return  storage [i];
               }
           }
-          return tmp;
+        return null;
       }
 
     void delete(String uuid)
       {
-        for (int i = 0; i <= index - 1; i++)
+        for (int i = 0; i <= notNull - 1; i ++)
           {
-            if (storage[i].uuid.equals(uuid))
+            if (storage[i].uuid == uuid)
               {
-                storage[i].uuid = "-";
+                storage [i].uuid = "-";
               }
           }
+        index --;
       }
 
     /**
@@ -54,34 +65,23 @@ public class ArrayStorage {
      */
     Resume[] getAll()
       {
-        Resume tmp [] = new Resume[index];
-        int indexTmp = 0;
-        int j = 0;
-
-
-        for (int i = 0; i <= index - 1; i++)
+        Resume [] tmp = new Resume[notNull];
+        int posTmp = 0;
+        for (int i= 0; i <= notNull - 1; i ++)
           {
-            tmp [i] = storage [i];
-          }
-
-        for (int i = 0; i <= tmp.length - 1; i ++)
-          {
-            if (!tmp [i].uuid.equals("-"))
+            if (storage [i].uuid == "-")
               {
-                indexTmp ++;
+                tmp [posTmp] = storage[i + 1];
+                posTmp ++;
+                i ++;
+              }
+            else
+              {
+                tmp [posTmp] = storage [i];
+                posTmp ++;
               }
           }
-          Resume [] output = new Resume[indexTmp];
-          index = 0;
-          for (int i = 0; i <= tmp.length - 1; i ++)
-            {
-              if (!tmp[i].uuid.equals("-"))
-                {
-                  output[j++] = tmp [i];
-                  index ++;
-                }
-            }
-          return output;
+        return tmp;
       }
 
     int size()
