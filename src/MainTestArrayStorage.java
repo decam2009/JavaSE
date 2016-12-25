@@ -36,6 +36,7 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.delete(r1.uuid);
         ARRAY_STORAGE.delete(r4.uuid);
         ARRAY_STORAGE.delete(r3.uuid);
+        ARRAY_STORAGE.delete(r2.uuid);
         printAll();
         System.out.println("Size: " + ARRAY_STORAGE.size());
         ARRAY_STORAGE.clear();
