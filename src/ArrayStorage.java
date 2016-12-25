@@ -69,15 +69,9 @@ public class ArrayStorage {
         int posTmp = 0;
         for (int i= 0; i <= notNull - 1; i ++)
           {
-            if (storage [i].uuid == "-")
+            if (storage [i].uuid != "-")
               {
-                tmp [posTmp] = storage[i + 1];
-                posTmp ++;
-                i ++;
-              }
-            else
-              {
-                tmp [posTmp] = storage [i];
+                tmp [posTmp] = storage[i];
                 posTmp ++;
               }
           }
