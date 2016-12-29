@@ -16,15 +16,11 @@ public class MainTestArrayStorage {
         Resume r5 = new Resume();
         r5.uuid = "uuid5";
 
-
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r3);
         ARRAY_STORAGE.save(r4);
         ARRAY_STORAGE.save(r5);
-
-        ARRAY_STORAGE.getNotNullRecords();
-
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r3.uuid));
         System.out.println("Size: " + ARRAY_STORAGE.size());

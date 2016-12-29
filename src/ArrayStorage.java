@@ -8,26 +8,17 @@ import java.util.List;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    private int index = 0;
-    private int notNull = 0;
-
-    int getNotNullRecords ()
-      {
-        for (int i = 0; i <= this.storage.length - 1; i++)
-          {
-            if (this.storage [i] != null)
-              {
-                this.notNull ++;
-              }
-          }
-        return this.notNull;
-      }
+    int index = 0;
 
     void clear()
       {
-        storage = null;
+        int i = 0;
+        while (storage [i] != null)
+		  {
+		    storage [i] = null;
+		    i ++;
+		  }
         index = 0;
-        notNull = 0;
       }
 
     void save(Resume r)
@@ -38,48 +29,69 @@ public class ArrayStorage {
 
     Resume get(String uuid)
       {
-        for (int i = 0; i <= notNull - 1; i ++)
+        int i = 0;
+        while (storage[i] != null)
           {
-            if (storage [i].uuid == uuid)
+            if (storage[i].uuid == uuid)
               {
-                return  storage [i];
+                return storage[i];
               }
+            i ++;
           }
-        return null;
+          return null;
       }
 
     void delete(String uuid)
       {
-        for (int i = 0; i <= notNull - 1; i ++)
+        int i = 0, j = 0, k;
+
+        while (storage[i] != null)
           {
             if (storage[i].uuid == uuid)
               {
-                storage [i].uuid = "-";
-              }
-          }
-        index --;
-      }
+                k = i;
+                while (storage [j] != null)
+				  {
+				    storage [k] = storage [k + 1];
+				    j ++;
+				    k ++;
+				  }
+				break;
+         	  }
+			i ++;
+		  }
+		index --;
+	  }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll()
       {
-        Resume [] tmp = new Resume[notNull];
-        int posTmp = 0;
-        for (int i= 0; i <= notNull - 1; i ++)
-          {
-            if (storage [i].uuid != "-")
-              {
-                tmp [posTmp] = storage[i];
-                posTmp ++;
-              }
-          }
-        return tmp;
+		Resume tmp [] = new Resume [index];
+		int i = 0;
+
+		while (storage [i] != null)
+		  {
+		    tmp [i] = storage [i];
+		    i ++;
+		  }
+	    return tmp;
       }
 
     int size()
       {
         return index;
+      }
+    // HW2
+
+    boolean isNew ()
+      {
+        return true;
+      }
+
+
+    void update (Resume r)
+      {
       }
 }
