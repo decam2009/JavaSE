@@ -85,13 +85,32 @@ public class ArrayStorage {
       }
     // HW2
 
-    boolean isNew ()
+    boolean isNew (Resume r)
       {
-        return true;
+		int i = 0;
+        while (storage [i] != null)
+		  {
+		    if (storage [i].equals(r))
+			  {
+			    return false;
+			  }
+			i ++;
+		  }
+		return true;
       }
 
 
-    void update (Resume r)
+    void update (String uuid, String newUuid)
       {
+		int i = 0;
+        while (storage [i] != null)
+		  {
+		    if (storage[i].uuid == uuid)
+			  {
+			    storage [i].uuid = newUuid;
+			    break;
+			  }
+			i ++;
+	 	  }
       }
 }
