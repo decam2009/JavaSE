@@ -30,37 +30,42 @@ public class ArrayStorage {
     Resume get(String uuid)
       {
         int i = 0;
-        while (storage[i] != null)
+        if (!isNew(uuid))
           {
-            if (storage[i].uuid == uuid)
-              {
-                return storage[i];
-              }
-            i ++;
-          }
-          return null;
-      }
+		    while (storage[i] != null)
+			  {
+			    if (storage[i].uuid == uuid)
+			      {
+			        return storage[i];
+			      }
+			    i++;
+		      }
+		  }
+		return null;
+	  }
 
     void delete(String uuid)
       {
         int i = 0, j = 0, k;
-
-        while (storage[i] != null)
-          {
-            if (storage[i].uuid == uuid)
-              {
-                k = i;
-                while (storage [j] != null)
-				  {
-				    storage [k] = storage [k + 1];
-				    j ++;
-				    k ++;
-				  }
-				break;
-         	  }
-			i ++;
+		if (!isNew(uuid))
+		  {
+		    while (storage[i] != null)
+			  {
+			    if (storage[i].uuid == uuid)
+			      {
+			        k = i;
+			        while (storage[j] != null)
+					  {
+				        storage[k] = storage[k + 1];
+				        j++;
+				        k++;
+			          }
+			        break;
+			      }
+			    i++;
+		      }
+			index --;
 		  }
-		index --;
 	  }
 
     /**
@@ -85,17 +90,18 @@ public class ArrayStorage {
       }
     // HW2
 
-    boolean isNew (Resume r)
+    boolean isNew (String uuid)
       {
 		int i = 0;
         while (storage [i] != null)
 		  {
-		    if (storage [i].equals(r))
+		    if (storage [i].uuid == uuid)
 			  {
-			    return false;
+				return false;
 			  }
 			i ++;
 		  }
+		System.out.println("ERROR: Resume " + uuid + " doesn't exist");
 		return true;
       }
 
@@ -103,14 +109,17 @@ public class ArrayStorage {
     void update (String uuid, String newUuid)
       {
 		int i = 0;
-        while (storage [i] != null)
+		if (!isNew(uuid))
 		  {
-		    if (storage[i].uuid == uuid)
-			  {
-			    storage [i].uuid = newUuid;
-			    break;
-			  }
-			i ++;
-	 	  }
+		    while (storage[i] != null)
+		      {
+			    if (storage[i].uuid == uuid)
+			      {
+			        storage[i].uuid = newUuid;
+			        break;
+			      }
+			    i++;
+		      }
+		  }
       }
 }
