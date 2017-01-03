@@ -23,9 +23,10 @@ public class ArrayStorage {
 
     void save(Resume r)
       {
-        storage [index] = r;
-        index ++;
-      }
+        storage[index] = r;
+	    index++;
+	  }
+
 
     Resume get(String uuid)
       {
