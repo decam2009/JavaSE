@@ -87,13 +87,13 @@ public class ArrayStorage extends AbstractArrayStorage
 		int i = 0;
         while (storage [i] != null)
 		  {
-		    if (storage [i].uuid == uuid)
+		    if (storage [i].uuid.equals(uuid))
 			  {
 				return false;
 			  }
 			i ++;
 		  }
-		System.out.println("ERROR: model.Resume " + uuid + " doesn't exist");
+		System.out.println("ERROR: Resume " + uuid + " doesn't exist");
 		return true;
       }
 

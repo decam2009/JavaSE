@@ -12,7 +12,15 @@ public class SortedArrayStorage extends AbstractArrayStorage
   @Override
   protected boolean isNew(String uuid)
     {
-	  return false;
+	  for (int i = 0; i <= size; i ++)
+	    {
+	      if (storage[i].uuid.equals(uuid))
+		    {
+			  System.out.println("ERROR: Resume already exists in the list. Enter another UUID");
+			  return false;
+			}
+		}
+      return true;
     }
 
   @Override
@@ -29,6 +37,7 @@ public class SortedArrayStorage extends AbstractArrayStorage
       int index = getIndex(uuid);
       Resume tmp1 [] =  Arrays.copyOfRange(storage, 0, index);
       Resume tmp2 [] = Arrays.copyOfRange(storage, index + 1, size);
+
       for (int i = 0; i <= tmp1.length - 1; i ++)
 	    {
 	      storage [i] = tmp1 [i];
@@ -45,11 +54,8 @@ public class SortedArrayStorage extends AbstractArrayStorage
   @Override
   public void update(String uuid, String newUuid)
     {
-
+      int index = getIndex(uuid);
+      storage[index].uuid = newUuid;
     }
 
-  public SortedArrayStorage()
-    {
-      Arrays.sort(Arrays.copyOfRange(storage,0,size));
-    }
 }

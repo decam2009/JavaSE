@@ -1,6 +1,6 @@
 import model.Resume;
 import storage.ArrayStorage;
-
+import storage.SortedArrayStorage;
 import javax.sound.midi.Soundbank;
 import java.util.Arrays;
 
@@ -9,9 +9,12 @@ import java.util.Arrays;
  */
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    static final SortedArrayStorage SORTED_ARRAY_STORAGE = new SortedArrayStorage();
 
-    public static void main(String[] args) {
-        Resume r1 = new Resume();
+    public static void main(String[] args)
+	  {
+
+	    Resume r1 = new Resume();
         r1.uuid = "uuid1";
         Resume r2 = new Resume();
         r2.uuid = "uuid2";
@@ -27,8 +30,7 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.save(r3);
         ARRAY_STORAGE.save(r4);
         ARRAY_STORAGE.save(r5);
-
-       // ARRAY_STORAGE.update("uuid123", "uuid41");
+		// ARRAY_STORAGE.update("uuid123", "uuid41");
         printAll();
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get("uuid1"));

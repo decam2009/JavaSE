@@ -31,7 +31,7 @@ public abstract class AbstractArrayStorage implements Storage
 	@Override
 	public void save(Resume r)
 	  {
-	    Arrays.fill(storage, size, size, r);
+	    Arrays.fill(storage, size, size + 1, r);
 	    size ++;
 	  }
 
