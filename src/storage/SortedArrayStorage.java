@@ -10,6 +10,14 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage
 {
   @Override
+  public void save(Resume r)
+    {
+	  Arrays.fill(storage, size, size + 1, r);
+	  Arrays.sort(storage,0, size + 1);
+	  size ++;
+    }
+
+  @Override
   protected boolean isNew(String uuid)
     {
 	  for (int i = 0; i <= size; i ++)

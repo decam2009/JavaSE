@@ -31,7 +31,11 @@ public class ArrayStorage extends AbstractArrayStorage
 	@Override
 	public void save(Resume r)
 	  {
-	    super.save(r);
+	    if (!isNew(r.uuid))
+		  {
+			storage [size] = r;
+			size ++;
+		  }
 	  }
 
 	@Override

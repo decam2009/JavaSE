@@ -28,12 +28,7 @@ public abstract class AbstractArrayStorage implements Storage
 	    return Arrays.copyOfRange(storage, 0, size);
 	  }
 
-	@Override
-	public void save(Resume r)
-	  {
-	    Arrays.fill(storage, size, size + 1, r);
-	    size ++;
-	  }
+	abstract public void save(Resume r);
 
 	public int size()
 	  {
