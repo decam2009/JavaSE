@@ -26,6 +26,9 @@ public class MainTestSortedArrayStorage
 		SORTED_ARRAY_STORAGE.save(r2);
 		SORTED_ARRAY_STORAGE.save(r3);
 		SORTED_ARRAY_STORAGE.save(r5);
+		SORTED_ARRAY_STORAGE.save(r2);
+		SORTED_ARRAY_STORAGE.save(r5);
+		SORTED_ARRAY_STORAGE.save(r1);
 		printAll();
 
 		SORTED_ARRAY_STORAGE.delete("uuid3");

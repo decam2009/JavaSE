@@ -12,21 +12,30 @@ public class SortedArrayStorage extends AbstractArrayStorage
   @Override
   public void save(Resume r)
     {
-	  Arrays.fill(storage, size, size + 1, r);
-	  Arrays.sort(storage,0, size + 1);
-	  size ++;
+	  if (isNew(r.uuid) && !overLimit())
+	  {
+		Arrays.fill(storage, size, size + 1, r);
+		Arrays.sort(storage, 0, size + 1);
+		size++;
+	  }
     }
 
   @Override
   protected boolean isNew(String uuid)
     {
-	  for (int i = 0; i <= size; i ++)
+	  if (storage [0] == null)
+	  {
+		return true;
+	  }
+
+	  for (int i = 0; i <= size - 1; i++)
 	    {
 	      if (storage[i].uuid.equals(uuid))
-		    {
-			  System.out.println("ERROR: Resume already exists in the list. Enter another UUID");
+	        {
+	          System.out.println("ERROR: Resume " + uuid + " already exists in the list. Enter another UUID");
 			  return false;
 			}
+
 		}
       return true;
     }

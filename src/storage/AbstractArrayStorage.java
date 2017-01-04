@@ -47,4 +47,14 @@ public abstract class AbstractArrayStorage implements Storage
 	}
 
 	protected abstract int getIndex(String uuid);
+
+	protected boolean overLimit ()
+	  {
+	    if (size > STORAGE_LIMIT)
+		  {
+			System.out.println("Your storage is full. Delete unusefull resumes.");
+			return true;
+		  }
+		return false;
+	  }
   }
