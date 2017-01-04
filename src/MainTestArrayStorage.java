@@ -9,7 +9,6 @@ import java.util.Arrays;
  */
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
-    static final SortedArrayStorage SORTED_ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args)
 	  {
