@@ -1,5 +1,11 @@
+import model.Resume;
+import storage.ArrayStorage;
+
+import javax.sound.midi.Soundbank;
+import java.util.Arrays;
+
 /**
- * Test for com.urise.webapp.storage.ArrayStorage
+ * Test for com.urise.webapp.storage.storage.ArrayStorage
  */
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
@@ -17,19 +23,20 @@ public class MainTestArrayStorage {
         r5.uuid = "uuid5";
 
         ARRAY_STORAGE.save(r1);
-        ARRAY_STORAGE.save(r2);
+	    ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r3);
         ARRAY_STORAGE.save(r4);
         ARRAY_STORAGE.save(r5);
-        ARRAY_STORAGE.update("uuid123", "uuid41");
+
+       // ARRAY_STORAGE.update("uuid123", "uuid41");
         printAll();
 
-        System.out.println("Get r1: " + ARRAY_STORAGE.get("uuid123"));
+        System.out.println("Get r1: " + ARRAY_STORAGE.get("uuid1"));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
-
-        printAll();
+	    System.out.println("Index of r2: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r5));
+	    printAll();
         System.out.println("Size: " + ARRAY_STORAGE.size());
         //ARRAY_STORAGE.delete("uuid123");
         ARRAY_STORAGE.delete(r4.uuid);
