@@ -29,7 +29,7 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.save(r3);
         ARRAY_STORAGE.save(r4);
         ARRAY_STORAGE.save(r5);
-		// ARRAY_STORAGE.update("uuid123", "uuid41");
+		ARRAY_STORAGE.update("uuid123", "uuid41");
         printAll();
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get("uuid1"));

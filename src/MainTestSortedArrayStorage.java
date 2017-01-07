@@ -6,7 +6,7 @@ import storage.SortedArrayStorage;
  */
 public class MainTestSortedArrayStorage
   {
-    static final SortedArrayStorage SORTED_ARRAY_STORAGE = new SortedArrayStorage();
+    private static final SortedArrayStorage SORTED_ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args)
       {
@@ -31,12 +31,12 @@ public class MainTestSortedArrayStorage
 		SORTED_ARRAY_STORAGE.save(r1);
 		printAll();
 
-		SORTED_ARRAY_STORAGE.delete("uuid3");
+		//SORTED_ARRAY_STORAGE.delete("uuid332");
 		SORTED_ARRAY_STORAGE.delete("uuid5");
 		SORTED_ARRAY_STORAGE.delete("uuid4");
 		printAll();
 
-		SORTED_ARRAY_STORAGE.update("uuid1", "uuid1_new");
+		SORTED_ARRAY_STORAGE.update("uuid6", "uuid1_new");
 		printAll();
 
 		System.out.println("Get r2: " + SORTED_ARRAY_STORAGE.get("uuid2"));

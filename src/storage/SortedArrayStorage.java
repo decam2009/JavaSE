@@ -12,32 +12,20 @@ public class SortedArrayStorage extends AbstractArrayStorage
   @Override
   public void save(Resume r)
     {
-	  if (isNew(r.uuid) && !overLimit())
-	  {
-		Arrays.fill(storage, size, size + 1, r);
-		Arrays.sort(storage, 0, size + 1);
-		size++;
-	  }
-    }
-
-  @Override
-  protected boolean isNew(String uuid)
-    {
-	  if (storage [0] == null)
-	  {
-		return true;
-	  }
-
-	  for (int i = 0; i <= size - 1; i++)
+	  if (!overLimit())
 	    {
-	      if (storage[i].uuid.equals(uuid))
-	        {
-	          System.out.println("ERROR: Resume " + uuid + " already exists in the list. Enter another UUID");
-			  return false;
+		  int index = getIndex (r.uuid);
+	      if (index >= 0)
+		    {
+			  System.out.println("Resume " + r.uuid + " already exists");
 			}
-
-		}
-      return true;
+		  else
+		    {
+			  Arrays.fill(storage, size, size + 1, r);
+			  Arrays.sort(storage, 0, size + 1);
+			  size++;
+		    }
+	    }
     }
 
   @Override
@@ -52,19 +40,26 @@ public class SortedArrayStorage extends AbstractArrayStorage
   public void delete(String uuid)
     {
       int index = getIndex(uuid);
-      Resume tmp1 [] =  Arrays.copyOfRange(storage, 0, index);
-      Resume tmp2 [] = Arrays.copyOfRange(storage, index + 1, size);
-
-      for (int i = 0; i <= tmp1.length - 1; i ++)
+      if (index < 0)
 	    {
-	      storage [i] = tmp1 [i];
+		  System.out.println("Resume " + uuid + " doesn't exist");
 		}
-
-	  for (int i = 0; i <= tmp2.length - 1; i ++)
+	  else
 	    {
-		  storage [tmp1.length + i] = tmp2 [i];
+		  Resume tmp1[] = Arrays.copyOfRange(storage, 0, index);
+		  Resume tmp2[] = Arrays.copyOfRange(storage, index + 1, size);
+
+		  for (int i = 0; i <= tmp1.length - 1; i++)
+		    {
+		      storage[i] = tmp1[i];
+		    }
+
+		  for (int i = 0; i <= tmp2.length - 1; i++)
+		    {
+		      storage[tmp1.length + i] = tmp2[i];
+		    }
+		  size--;
 	    }
-	  size --;
 
     }
 
@@ -72,7 +67,14 @@ public class SortedArrayStorage extends AbstractArrayStorage
   public void update(String uuid, String newUuid)
     {
       int index = getIndex(uuid);
-      storage[index].uuid = newUuid;
+	  if (index < 0)
+	    {
+		  System.out.println("Resume " + uuid + " doesn't exist");
+	    }
+      else
+        {
+		  storage[index].uuid = newUuid;
+	    }
     }
 
 }

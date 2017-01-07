@@ -20,8 +20,6 @@ public abstract class AbstractArrayStorage implements Storage
 		size = 0;
 	  }
 
-	protected abstract boolean isNew(String uuid);
-
 	@Override
 	public Resume[] getAll()
 	  {
