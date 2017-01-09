@@ -11,11 +11,11 @@ import java.util.Arrays;
 public class ArrayStorage extends AbstractArrayStorage
   {
 
-    protected int getIndex (Resume uuid)
+    protected int getIndex (String uuid)
 	  {
-    	for (int i = 0; i <= storage.length - 1; i ++)
+    	for (int i = 0; i < size; i ++)
 		  {
-		    if (uuid.equals(storage[i]))
+		    if (uuid.equals(storage[i].getUuid()))
 			  {
 			    return i;
 			  }
@@ -32,7 +32,7 @@ public class ArrayStorage extends AbstractArrayStorage
 	@Override
 	public void save(Resume r)
 	  {
-	    int index = getIndex(r);
+	    int index = getIndex(r.getUuid());
 	    if (index > 0)
 		  {
 		    throw new ExistStorageException (r.getUuid());
@@ -45,7 +45,7 @@ public class ArrayStorage extends AbstractArrayStorage
 	  }
 
 	@Override
-	public Resume get(Resume uuid)
+	public Resume get(String uuid)
 	  {
 	    return super.get(uuid);
 	  }

@@ -35,17 +35,17 @@ public abstract class AbstractArrayStorage implements Storage
 	    return size;
 	  }
 
-	public Resume get(Resume uuid)
+	public Resume get(String uuid)
 	{
 	  int index = getIndex (uuid);
 	  if (index == -1)
 	    {
-		  throw new NotExistStorageException(uuid.getUuid());
+		  throw new NotExistStorageException(uuid);
 		}
 		return storage [index];
 	}
 
-	protected abstract int getIndex(Resume uuid);
+	protected abstract int getIndex(String uuid);
 
 	protected boolean overLimit ()
 	  {

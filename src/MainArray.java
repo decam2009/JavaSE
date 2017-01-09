@@ -42,7 +42,7 @@ public class MainArray {
                     printAll();
                     break;
                 case "get":
-                    System.out.println(ARRAY_STORAGE.get(r));
+                    System.out.println(ARRAY_STORAGE.get(r.getUuid()));
                     break;
                 case "clear":
                     ARRAY_STORAGE.clear();

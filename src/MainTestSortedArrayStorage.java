@@ -29,7 +29,7 @@ public class MainTestSortedArrayStorage
 		SORTED_ARRAY_STORAGE.update(r5, new Resume("uuid1_new"));
 		printAll();
 
-		System.out.println("Get r2: " + SORTED_ARRAY_STORAGE.get(r2));
+		System.out.println("Get r2: " + SORTED_ARRAY_STORAGE.get(r2.getUuid()));
 		System.out.println("Size: " + SORTED_ARRAY_STORAGE.size());
 
 		SORTED_ARRAY_STORAGE.clear();

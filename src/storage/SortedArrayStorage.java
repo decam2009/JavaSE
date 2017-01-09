@@ -16,7 +16,7 @@ public class SortedArrayStorage extends AbstractArrayStorage
     {
 	  if (!overLimit())
 	    {
-		  int index = getIndex (r);
+		  int index = getIndex (r.getUuid());
 	      if (index >= 0)
 		    {
 			  throw new ExistStorageException(r.getUuid());
@@ -31,16 +31,16 @@ public class SortedArrayStorage extends AbstractArrayStorage
     }
 
   @Override
-  protected int getIndex(Resume uuid)
+  protected int getIndex(String uuid)
     {
-	  Resume searchKey = uuid;
+	  String searchKey = uuid;
 	  return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 
   @Override
   public void delete(Resume uuid)
     {
-      int index = getIndex(uuid);
+      int index = getIndex(uuid.getUuid());
       if (index < 0)
 	    {
 		  throw new NotExistStorageException(uuid.getUuid());
@@ -67,7 +67,7 @@ public class SortedArrayStorage extends AbstractArrayStorage
   @Override
   public void update(Resume uuid, Resume newUuid)
     {
-      int index = getIndex(uuid);
+      int index = getIndex(uuid.getUuid());
 	  if (index < 0)
 	    {
 		  throw new NotExistStorageException(uuid.getUuid());

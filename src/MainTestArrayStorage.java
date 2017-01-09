@@ -17,7 +17,6 @@ public class MainTestArrayStorage {
         Resume r3 = new Resume("uuid3");
         Resume r4 = new Resume("uuid4");
         Resume r5 = new Resume("uuid5");
-		Resume r6 = new Resume("");
 
         ARRAY_STORAGE.save(r1);
 	    ARRAY_STORAGE.save(r2);
@@ -27,7 +26,7 @@ public class MainTestArrayStorage {
 		ARRAY_STORAGE.update(r1, new Resume("uuid41"));
         printAll();
 
-        System.out.println("Get r2: " + ARRAY_STORAGE.get(r2));
+        System.out.println("Get r2: " + ARRAY_STORAGE.get(r2.getUuid()));
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
        // System.out.println("Get dummy: " + ARRAY_STORAGE.get(r6));
