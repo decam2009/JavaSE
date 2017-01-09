@@ -1,5 +1,7 @@
 package storage;
 
+import exception.ExistStorageException;
+import exception.NotExistStorageException;
 import model.Resume;
 
 import java.util.Arrays;
@@ -14,10 +16,10 @@ public class SortedArrayStorage extends AbstractArrayStorage
     {
 	  if (!overLimit())
 	    {
-		  int index = getIndex (r.uuid);
+		  int index = getIndex (r);
 	      if (index >= 0)
 		    {
-			  System.out.println("Resume " + r.uuid + " already exists");
+			  throw new ExistStorageException(r.getUuid());
 			}
 		  else
 		    {
@@ -29,20 +31,19 @@ public class SortedArrayStorage extends AbstractArrayStorage
     }
 
   @Override
-  protected int getIndex(String uuid)
+  protected int getIndex(Resume uuid)
     {
-	  Resume searchKey = new Resume();
-	  searchKey.setUuid(uuid);
+	  Resume searchKey = uuid;
 	  return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 
   @Override
-  public void delete(String uuid)
+  public void delete(Resume uuid)
     {
       int index = getIndex(uuid);
       if (index < 0)
 	    {
-		  System.out.println("Resume " + uuid + " doesn't exist");
+		  throw new NotExistStorageException(uuid.getUuid());
 		}
 	  else
 	    {
@@ -64,16 +65,16 @@ public class SortedArrayStorage extends AbstractArrayStorage
     }
 
   @Override
-  public void update(String uuid, String newUuid)
+  public void update(Resume uuid, Resume newUuid)
     {
       int index = getIndex(uuid);
 	  if (index < 0)
 	    {
-		  System.out.println("Resume " + uuid + " doesn't exist");
+		  throw new NotExistStorageException(uuid.getUuid());
 	    }
       else
         {
-		  storage[index].uuid = newUuid;
+		  storage[index] = newUuid;
 	    }
     }
 

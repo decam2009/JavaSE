@@ -1,5 +1,7 @@
 package storage;
 
+import exception.NotExistStorageException;
+import exception.StorageException;
 import model.Resume;
 
 import java.util.Arrays;
@@ -33,25 +35,23 @@ public abstract class AbstractArrayStorage implements Storage
 	    return size;
 	  }
 
-	public Resume get(String uuid)
+	public Resume get(Resume uuid)
 	{
 	  int index = getIndex (uuid);
 	  if (index == -1)
 	    {
-		  System.out.println("Resume " + uuid + " doesn't exist");
-		  return null;
+		  throw new NotExistStorageException(uuid.getUuid());
 		}
 		return storage [index];
 	}
 
-	protected abstract int getIndex(String uuid);
+	protected abstract int getIndex(Resume uuid);
 
 	protected boolean overLimit ()
 	  {
 	    if (size > STORAGE_LIMIT)
 		  {
-			System.out.println("Your storage is full. Delete unusefull resumes.");
-			return true;
+			throw new StorageException("Storage overflow", "");
 		  }
 		return false;
 	  }
