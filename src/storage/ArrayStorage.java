@@ -51,12 +51,12 @@ public class ArrayStorage extends AbstractArrayStorage
 	  }
 
 	@Override
-	public void delete(Resume uuid)
+	public void delete(String uuid)
 	{
 	  int i = 0, j = 0, k;
 	  while (storage[i] != null)
 	    {
-		  if (storage[i] == uuid)
+		  if (storage[i].getUuid() == uuid)
 		  {
 			k = i;
 			while (storage[j] != null)

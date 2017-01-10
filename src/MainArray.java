@@ -38,7 +38,7 @@ public class MainArray {
                     printAll();
                     break;
                 case "delete":
-                    ARRAY_STORAGE.delete(r);
+                    ARRAY_STORAGE.delete(r.getUuid());
                     printAll();
                     break;
                 case "get":

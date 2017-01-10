@@ -23,7 +23,7 @@ public class MainTestSortedArrayStorage
 		SORTED_ARRAY_STORAGE.save(r5);
 		printAll();
 
-		SORTED_ARRAY_STORAGE.delete(r4);
+		SORTED_ARRAY_STORAGE.delete(r4.getUuid());
 		printAll();
 
 		SORTED_ARRAY_STORAGE.update(r5, new Resume("uuid1_new"));

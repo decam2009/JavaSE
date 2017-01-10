@@ -11,6 +11,8 @@ import java.util.Arrays;
  */
 public class SortedArrayStorage extends AbstractArrayStorage
 {
+
+
   @Override
   public void save(Resume r)
     {
@@ -38,12 +40,12 @@ public class SortedArrayStorage extends AbstractArrayStorage
     }
 
   @Override
-  public void delete(Resume uuid)
+  public void delete(String uuid)
     {
-      int index = getIndex(uuid.getUuid());
+      int index = getIndex(uuid);
       if (index < 0)
 	    {
-		  throw new NotExistStorageException(uuid.getUuid());
+		  throw new NotExistStorageException(uuid);
 		}
 	  else
 	    {

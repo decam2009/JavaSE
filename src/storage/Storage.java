@@ -10,7 +10,7 @@ public interface Storage
 	void clear();
 	void save(Resume r);
 	Resume get(String uuid);
-	void delete(Resume uuid);
+	void delete(String uuid);
 	Resume[] getAll();
 	int size();
 	void update (Resume uuid, Resume newUuid);
