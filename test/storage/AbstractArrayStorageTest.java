@@ -21,21 +21,21 @@ public class AbstractArrayStorageTest
 
 	public AbstractArrayStorageTest()
 	  {
-		//storage = new ArrayStorage();
+		storage = new ArrayStorage();
 		sortedStorage = new SortedArrayStorage();
 	  }
 
 	@Before
 	public void setUp ()
 	  {
-	   // storage.clear();
-	   // storage.save(new Resume(UUID1));
-	   // storage.save(new Resume(UUID2));
-	   // storage.save(new Resume(UUID3));
+	    storage.clear();
+	    storage.save(new Resume(UUID1));
+	    storage.save(new Resume(UUID2));
+	    storage.save(new Resume(UUID3));
 		sortedStorage.clear();
 		sortedStorage.save(new Resume(UUID3));
 		sortedStorage.save(new Resume(UUID2));
-	//	sortedStorage.save(new Resume(UUID1));
+		sortedStorage.save(new Resume(UUID1));
 
 	  }
 
@@ -78,7 +78,13 @@ public class AbstractArrayStorageTest
         Assert.assertEquals(3, storage.size());
       }
 
-    @Test
+	@Test
+	public void sizeSorted () throws Exception
+	  {
+		Assert.assertEquals(3, sortedStorage.size());
+	  }
+
+	@Test
     public void get() throws Exception
 	  {
         Assert.assertEquals("uuid1", storage.get("uuid1").getUuid());
