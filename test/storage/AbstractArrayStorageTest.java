@@ -64,6 +64,17 @@ public class AbstractArrayStorageTest
 		Assert.assertEquals(elemCount, storage.size());
 	  }
 
+	@Test
+	public void getAllSorted() throws Exception
+	{
+	  int elemCount = 0;
+	  for (Resume r: sortedStorage.getAll())
+	  {
+		elemCount++;
+	  }
+	  Assert.assertEquals(elemCount, sortedStorage.size());
+	}
+
     @Test
     public void save() throws Exception
 	  {
@@ -71,6 +82,14 @@ public class AbstractArrayStorageTest
         storage.save(new Resume(UUID_4));
         Assert.assertEquals(4, storage.size());
 	  }
+
+	@Test
+	public void saveSorted () throws Exception
+	{
+	  final String UUID_4 = "uuid4";
+	  sortedStorage.save(new Resume(UUID_4));
+	  Assert.assertEquals(4, sortedStorage.size());
+	}
 
     @Test
     public void size() throws Exception
@@ -93,10 +112,25 @@ public class AbstractArrayStorageTest
       }
 
 	@Test
+	public void getSorted () throws Exception
+	{
+	  Assert.assertEquals("uuid1", sortedStorage.get("uuid1").getUuid());
+	  Assert.assertEquals("uuid2", sortedStorage.get("uuid2").getUuid());
+	  Assert.assertEquals("uuid3", sortedStorage.get("uuid3").getUuid());
+	}
+
+	@Test
 	public void delete() throws Exception
 	{
 	  storage.delete("uuid1");
 	  Assert.assertEquals(2,storage.size());
+	}
+
+	@Test
+	public void deleteSorted() throws Exception
+	{
+	  sortedStorage.delete("uuid1");
+	  Assert.assertEquals(2,sortedStorage.size());
 	}
 
   }
