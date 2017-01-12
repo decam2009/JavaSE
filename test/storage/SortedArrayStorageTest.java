@@ -14,31 +14,31 @@ public class SortedArrayStorageTest extends AbstractArrayStorageTest
 	  }
 
 	@Test
-	public void sizeSorted() throws Exception
+	public void sizeSorted()
 	{
  	  super.sizeSorted();
 	}
 
 	@Test
-	public void clearSorted() throws Exception
+	public void clearSorted()
 	  {
 		super.clearSorted();
 	  }
 
 	@Test
-	public void getSorted() throws Exception
+	public void getSorted()
 	  {
 		super.getSorted();
 	  }
 
 	@Test
-	public void getAllSorted() throws Exception
+	public void getAllSorted()
 	  {
 		super.getAllSorted();
 	  }
 
 	@Test
-	public void deleteSorted() throws Exception
+	public void deleteSorted()
 	  {
 		super.deleteSorted();
 	  }
