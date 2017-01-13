@@ -5,6 +5,7 @@ import exception.NotExistStorageException;
 import model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by BORIS on 03.01.17.
@@ -37,6 +38,12 @@ public class SortedArrayStorage extends AbstractArrayStorage
     {
 	  Resume searchKey = new Resume(uuid);
 	  return Arrays.binarySearch(storage, 0, size, searchKey);
+    }
+
+  @Override
+  public List<Resume> getAllResumes()
+    {
+	  return null;
     }
 
   @Override

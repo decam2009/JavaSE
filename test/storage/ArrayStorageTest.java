@@ -14,31 +14,31 @@ public class ArrayStorageTest extends AbstractArrayStorageTest
  	  }
 
     @Test
-	public void size() throws Exception
+	public void size()
 	  {
 		super.size();
 	  }
 
 	@Test
-	public void clear () throws Exception
+	public void clear ()
 	  {
    		super.clear();
 	  }
 
 	@Test
-	public void get () throws Exception
+	public void get ()
 	  {
   		super.get();
  	  }
 
 	@Test
-	public void save() throws Exception
+	public void save()
 	  {
 		super.save();
 	  }
 
 	@Test
-	public void getAll () throws Exception
+	public void getAll ()
 	  {
 		super.getAll();
  	  }

@@ -4,6 +4,7 @@ import exception.ExistStorageException;
 import model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Array based storage for Resumes
@@ -105,4 +106,9 @@ public class ArrayStorage extends AbstractArrayStorage
 		  }
 	  }
 
+	@Override
+	public List<Resume> getAllResumes()
+	  {
+	    return null;
+	  }
   }

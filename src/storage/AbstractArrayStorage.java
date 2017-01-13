@@ -5,6 +5,7 @@ import exception.StorageException;
 import model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by BORIS on 03.01.17.
@@ -55,4 +56,7 @@ public abstract class AbstractArrayStorage implements Storage
 		  }
 		return false;
 	  }
+
+	@Override
+	public abstract List<Resume> getAllResumes();
   }

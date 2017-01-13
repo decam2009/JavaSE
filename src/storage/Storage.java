@@ -2,6 +2,8 @@ package storage;
 
 import model.Resume;
 
+import java.util.List;
+
 /**
  * Created by BORIS on 03.01.17.
  */
@@ -14,4 +16,5 @@ public interface Storage
 	Resume[] getAll();
 	int size();
 	void update (Resume uuid, Resume newUuid);
+	List<Resume> getAllResumes();
   }
