@@ -60,4 +60,22 @@ public class ListStorage extends AbstractStorage
 	  {
  		resumeList.set(getIndex(uuid.getUuid()), newUuid);
 	  }
+
+	@Override
+	public int getIndex(String uuid)
+	  {
+	    {
+		  Iterator<Resume> iterator = resumeList.iterator();
+		  while (iterator.hasNext())
+		    {
+		      Resume r = iterator.next();
+			  if (r.getUuid().equals(uuid))
+		        {
+				  return resumeList.indexOf(r);
+		  	    }
+		    }
+		   return 0;
+	    }
+	  }
   }
+

@@ -10,7 +10,8 @@ import java.util.*;
 public abstract class AbstractStorage extends AbstractArrayStorage
   {
 
-    protected List <Resume> resumeList = new ArrayList<>();
+    protected List <Resume> resumeList = new ArrayList<Resume>();
+    protected HashMap<String, Resume> resumeHashMap = new HashMap<String, Resume>();
 
 	@Override
 	public abstract void clear();
@@ -37,17 +38,6 @@ public abstract class AbstractStorage extends AbstractArrayStorage
 	public abstract void update(Resume uuid, Resume newUuid);
 
 	@Override
-	protected int getIndex(String uuid)
-	  {
-	    Iterator<Resume> iterator = resumeList.iterator();
-		while (iterator.hasNext())
-		  {
-		    Resume r = iterator.next();
-		    if (r.getUuid().equals(uuid))
-			  {
-				return resumeList.indexOf(r);
-			  }
-		  }
-		return 0;
-	  }
+	public abstract int getIndex(String uuid);
+
   }
