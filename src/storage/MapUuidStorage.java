@@ -2,9 +2,7 @@ package storage;
 
 import model.Resume;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by BORIS on 19.01.17.
@@ -12,59 +10,68 @@ import java.util.Objects;
 public class MapUuidStorage extends AbstractStorage
   {
 
-    HashMap<String, Resume> resumeHashMap = new HashMap<String, Resume>();
+    private HashMap<String, Resume> storageHashMap = new HashMap<String, Resume>();
+	private Map<String, Resume> sortedStorageHashMap = new TreeMap<String, Resume>();
 
 	@Override
 	public int size()
 	  {
-	    return 0;
+	    return storageHashMap.size();
 	  }
 
 	@Override
 	public void clear()
 	  {
-
+		storageHashMap.clear();
 	  }
 
 	@Override
 	protected void doSave(Resume r, Object searchKey)
 	  {
-
+		searchKey = getSearchKey(r.getUuid());
+	    storageHashMap.put(searchKey.toString(), r);
 	  }
 
 	@Override
-	public List<Resume> getAllSorted()
+	protected List<Resume> doGetAllSorted()
 	  {
-	    return null;
+	    sortedStorageHashMap.putAll(storageHashMap);
+	    return new ArrayList<Resume>(sortedStorageHashMap.values());
+	  }
+
+
+	@Override
+	protected void doUpdate(Resume rOld, Resume rNew, Object searchKey)
+	  {
+		searchKey = getSearchKey(rOld.getUuid());
+	    storageHashMap.replace(searchKey.toString(), rOld, rNew);
 	  }
 
 	@Override
-	protected void doUpdate(Resume r, Object searchKey)
+	protected String getSearchKey(String uuid)
 	  {
-
-	  }
-
-	@Override
-	protected Objects getSearchKey(String uuid)
-	  {
-	    return null;
+	    return uuid;
 	  }
 
 	@Override
 	protected Resume doGet(Object searchKey)
 	  {
-	    return null;
+	    return storageHashMap.get(searchKey);
 	  }
 
 	@Override
 	protected boolean isExist(Object searchKey)
 	  {
+	    if (storageHashMap.containsKey(searchKey))
+		  {
+			return true;
+		  }
 	    return false;
 	  }
 
 	@Override
 	protected void doDelete(Object searchKey)
 	  {
-
+		storageHashMap.remove(searchKey);
 	  }
   }
