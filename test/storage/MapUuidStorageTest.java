@@ -1,16 +1,17 @@
 package storage;
 
-import model.Resume;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
  * Created by BORIS on 19.01.17.
  */
-public class MapUuidStorageTest {
+public class MapUuidStorageTest extends AbstractStorageTest
+  {
 
-  MapUuidStorage storage = new MapUuidStorage();
+	public MapUuidStorageTest()
+	{
+	  super(new MapUuidStorage());
+	}
+
+  /*MapUuidStorage storage = new MapUuidStorage();
 
   private static final String UUID_1 = "uuid1";
   private static final String UUID_2 = "uuid2";
@@ -72,5 +73,5 @@ public class MapUuidStorageTest {
   public void getAllSorted()
     {
       storage.getAllSorted();
-    }
+    }*/
 }

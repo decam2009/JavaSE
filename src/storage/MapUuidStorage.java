@@ -76,6 +76,8 @@ public class MapUuidStorage extends AbstractStorage
 	@Override
 	public Resume[] getAll()
 	  {
-	    return new Resume[0];
+	    Resume[] a = new Resume[0];
+	    sortedStorageHashMap.putAll(storageHashMap);
+	    return sortedStorageHashMap.values().toArray(a);
 	  }
   }
