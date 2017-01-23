@@ -16,4 +16,5 @@ public interface Storage
 	void clear();
 	void update (Resume oldR, Resume newR);
 	List<Resume> getAllSorted();
+	Resume [] getAll();
   }

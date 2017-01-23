@@ -1,7 +1,5 @@
 package storage;
 
-import exception.ExistStorageException;
-import exception.NotExistStorageException;
 import exception.StorageException;
 import model.Resume;
 
@@ -12,98 +10,70 @@ import java.util.List;
  * Created by BORIS on 03.01.17.
  */
 
-public abstract class AbstractArrayStorage implements Storage
+public abstract class AbstractArrayStorage extends AbstractStorage
   {
     private static final int STORAGE_LIMIT = 10000;
     public Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
-
-	public void clear()
-	  {
-	    Arrays.fill(storage, 0, size, null);
-		size = 0;
-	  }
-
-	@Override
-	public List<Resume> getAllSorted()
-	  {
-	    return Arrays.asList(storage);
-	  }
-
-	@Override
-	public void delete(String uuid)
-	  {
-	    int index = getIndex(uuid);
-	    if (index < 0)
-		  {
-		    throw new NotExistStorageException(uuid);
-		  }
-		else
-		  {
-		    Arrays.copyOfRange(storage, 0, index - 1);
-		    Arrays.copyOfRange(storage, index + 1, size);
-		    size--;
-		  }
-	  }
-
-	@Override
-	public void update(Resume oldR, Resume newR)
-	  {
-        int index = getIndex(oldR.getUuid());
-		if (index < 0)
-		  {
-		    throw new NotExistStorageException(oldR.getUuid());
-		  }
-		else
-		  {
-			Arrays.fill(storage, index, index + 1, newR);
-		  }
-	  }
-
-	public void save(Resume r)
-	  {
-		if (!overLimit())
-		  {
-		    int index = getIndex(r.getUuid());
-		    if (index > 0)
-			  {
-			    throw new ExistStorageException(r.getUuid());
-			  }
-			else
-			  {
-			    Arrays.fill(storage, size, size + 1, r);
-				size ++;
-			  }
-		  }
-	  }
 
 	public int size()
 	  {
 	    return size;
 	  }
 
-	public Resume get(String uuid)
+	public void clear() {
+	  Arrays.fill(storage, 0, size, null);
+	  size = 0;
+	}
+
+	@Override
+	protected void doUpdate(Resume r, Object index) {
+	  storage[(Integer) index] = r;
+	}
+
+	/**
+	 * @return array, contains only Resumes in storage (without null)
+	 */
+	public Resume[] getAll() {
+	  return Arrays.copyOfRange(storage, 0, size);
+	}
+
+	@Override
+	protected void doSave(Resume r, Object index) {
+	  if (size == STORAGE_LIMIT) {
+		throw new StorageException("Storage overflow", r.getUuid());
+	  } else {
+		insertElement(r, (Integer) index);
+		size++;
+	  }
+	}
+
+	@Override
+	public void doDelete(Object index) {
+	  fillDeletedElement((Integer) index);
+	  storage[size - 1] = null;
+	  size--;
+	}
+
+	public Resume doGet(Object index) {
+	  return storage[(Integer) index];
+	}
+
+	@Override
+	protected boolean isExist(Object index) {
+	  return (Integer) index >= 0;
+	}
+
+	@Override
+	protected List<Resume> doGetAllSorted()
 	  {
-	    int index = getIndex (uuid);
-	    if (index == -1)
-	      {
-		    throw new NotExistStorageException(uuid);
-		  }
-		return storage [index];
+	    return Arrays.asList(storage);
 	  }
 
-	protected int getIndex(String uuid)
-	  {
-		Resume searchKey = new Resume(uuid);
-	    return Arrays.binarySearch(storage, 0, size, searchKey);
-	  }
+	protected abstract void fillDeletedElement(int index);
 
-	protected boolean overLimit ()
-	  {
-	    if (size == STORAGE_LIMIT)
-		  {
-			throw new StorageException("Storage overflow", "");
-		  }
-		return false;
-	  }
+	protected abstract void insertElement(Resume r, int index);
+
+	protected abstract Integer getSearchKey(String uuid);
+
   }

@@ -16,7 +16,7 @@ public abstract class AbstractStorage implements Storage
 
     protected abstract void doSave(Resume r, Object searchKey);
 
-	protected abstract void doUpdate(Resume rOld, Resume rNew, Object searchKey);
+	protected abstract void doUpdate(Resume oldR, Object searchKey);
 
 	protected abstract Resume doGet(Object searchKey);
 
@@ -51,7 +51,7 @@ public abstract class AbstractStorage implements Storage
 	public void update(Resume oldR, Resume newR)
 	  {
 		Object searchKey = getExistedSearchKey(oldR.getUuid());
-		doUpdate (oldR, newR, searchKey);
+		doUpdate (newR, searchKey);
 	  }
 
 	@Override

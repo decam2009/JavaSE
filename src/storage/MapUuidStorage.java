@@ -39,12 +39,10 @@ public class MapUuidStorage extends AbstractStorage
 	    return new ArrayList<Resume>(sortedStorageHashMap.values());
 	  }
 
-
 	@Override
-	protected void doUpdate(Resume rOld, Resume rNew, Object searchKey)
+	protected void doUpdate(Resume r, Object searchKey)
 	  {
-		searchKey = getSearchKey(rOld.getUuid());
-	    storageHashMap.replace(searchKey.toString(), rOld, rNew);
+	    storageHashMap.replace(searchKey.toString(), r);
 	  }
 
 	@Override
@@ -73,5 +71,11 @@ public class MapUuidStorage extends AbstractStorage
 	protected void doDelete(Object searchKey)
 	  {
 		storageHashMap.remove(searchKey);
+	  }
+
+	@Override
+	public Resume[] getAll()
+	  {
+	    return new Resume[0];
 	  }
   }
