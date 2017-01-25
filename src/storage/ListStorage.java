@@ -3,6 +3,7 @@ package storage;
 import model.Resume;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -12,6 +13,7 @@ public class ListStorage extends AbstractStorage
   {
 
 	private List<Resume> list = new ArrayList<>();
+	private static final Comparator<Resume> RESUME_COMPARATOR = ((o1, o2) -> o1.getUuid().compareTo(o2.getUuid()));
 
 	@Override
 	protected Object getSearchKey(String uuid)
@@ -45,7 +47,8 @@ public class ListStorage extends AbstractStorage
 	@Override
 	protected List<Resume> doGetAllSorted()
 	  {
-	    return null;
+	    list.sort(RESUME_COMPARATOR);
+	    return list;
 	  }
 
 	@Override
@@ -78,5 +81,7 @@ public class ListStorage extends AbstractStorage
 	  Resume a [] = new Resume[0];
 	  return list.toArray(a);
 	}
+
+
   }
 
