@@ -9,14 +9,14 @@ import java.util.List;
 /**
  * Created by BORIS on 13.01.17.
  */
-public class ListStorage extends AbstractStorage
+public class ListStorage extends AbstractStorage<Integer>
   {
 
 	private List<Resume> list = new ArrayList<>();
 	private static final Comparator<Resume> RESUME_COMPARATOR = ((o1, o2) -> o1.getUuid().compareTo(o2.getUuid()));
 
 	@Override
-	protected Object getSearchKey(String uuid)
+	protected Integer getSearchKey(String uuid)
 	  {
 		for (int i = 0; i < list.size(); i++) {
 		  if (list.get(i).getUuid().equals(uuid)) {
@@ -27,21 +27,21 @@ public class ListStorage extends AbstractStorage
 	  }
 
 	@Override
-	protected void doSave(Resume r, Object searchKey)
+	protected void doSave(Resume r, Integer searchKey)
 	  {
 		list.add(r);
 	  }
 
 	@Override
-	protected void doUpdate(Resume r, Object searchKey)
+	protected void doUpdate(Resume r, Integer searchKey)
 	  {
-	    list.set((Integer)searchKey, r);
+	    list.set(searchKey, r);
 	  }
 
 	@Override
-	protected Resume doGet(Object searchKey)
+	protected Resume doGet(Integer searchKey)
 	  {
-		return list.get((Integer) searchKey);
+		return list.get(searchKey);
 	  }
 
 	@Override
@@ -52,15 +52,15 @@ public class ListStorage extends AbstractStorage
 	  }
 
 	@Override
-	protected boolean isExist(Object searchKey)
+	protected boolean isExist(Integer searchKey)
 	  {
 		return searchKey != null;
 	  }
 
 	@Override
-	protected void doDelete(Object searchKey)
+	protected void doDelete(Integer searchKey)
 	  {
-		list.remove(((Integer) searchKey).intValue());
+		list.remove(searchKey.intValue());
 	  }
 
 	@Override

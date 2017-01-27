@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Created by BORIS on 19.01.17.
  */
-public class MapUuidStorage extends AbstractStorage
+public class MapUuidStorage extends AbstractStorage<String>
   {
 
     private HashMap<String, Resume> storageHashMap = new HashMap<String, Resume>();
@@ -26,7 +26,7 @@ public class MapUuidStorage extends AbstractStorage
 	  }
 
 	@Override
-	protected void doSave(Resume r, Object searchKey)
+	protected void doSave(Resume r, String searchKey)
 	  {
 		searchKey = getSearchKey(r.getUuid());
 	    storageHashMap.put(searchKey.toString(), r);
@@ -40,7 +40,7 @@ public class MapUuidStorage extends AbstractStorage
 	  }
 
 	@Override
-	protected void doUpdate(Resume r, Object searchKey)
+	protected void doUpdate(Resume r, String searchKey)
 	  {
 	    storageHashMap.replace(searchKey.toString(), r);
 	  }
@@ -52,13 +52,13 @@ public class MapUuidStorage extends AbstractStorage
 	  }
 
 	@Override
-	protected Resume doGet(Object searchKey)
+	protected Resume doGet(String searchKey)
 	  {
 	    return storageHashMap.get(searchKey);
 	  }
 
 	@Override
-	protected boolean isExist(Object searchKey)
+	protected boolean isExist(String searchKey)
 	  {
 	    if (storageHashMap.containsKey(searchKey))
 		  {
@@ -68,7 +68,7 @@ public class MapUuidStorage extends AbstractStorage
 	  }
 
 	@Override
-	protected void doDelete(Object searchKey)
+	protected void doDelete(String searchKey)
 	  {
 		storageHashMap.remove(searchKey);
 	  }
