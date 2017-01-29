@@ -3,10 +3,10 @@ import org.junit.Test;
 /**
  * Created by BORIS on 29.01.17.
  */
-public class DirectoryStructureTest {
+public class FilesStructureTest {
 
 
-  DirectoryStructure ds = new DirectoryStructure();
+  FilesStructure ds = new FilesStructure();
 
   @Test
   public void getAllFiles()
