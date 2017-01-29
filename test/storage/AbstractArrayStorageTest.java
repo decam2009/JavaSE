@@ -24,13 +24,13 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest
 		  {
 			for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT - 1; i++)
 			  {
-			    storage.save(new Resume());
+			    storage.save(new Resume("Boris Kaloshin"));
 			  }
 		  }
 		catch (StorageException e)
 		  {
 			Assert.fail();
 		  }
-		storage.save(new Resume());
+		storage.save(new Resume("Boris Kaloshin"));
 	  }
   }

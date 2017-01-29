@@ -1,6 +1,7 @@
 package model;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -8,18 +9,18 @@ import java.util.Objects;
  */
 public class OrganizationSection extends Section
   {
-    private final List<Organization> organizations;
+    private final Map <Organization, List <Organization>> organizations;
 
-	public OrganizationSection(List<Organization> organizations)
+	public OrganizationSection (Map <Organization, List<Organization>> organizations)
 	  {
 		Objects.requireNonNull(organizations, "organization can not be null");
 	    this.organizations = organizations;
 	  }
 
-	public List<Organization> getOrganizations()
-	{
-	  return organizations;
-	}
+	public Map<Organization, List<Organization>> getOrganizations()
+	  {
+	    return organizations;
+	  }
 
 	@Override
 	public String toString()
