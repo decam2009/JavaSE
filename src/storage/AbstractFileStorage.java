@@ -5,6 +5,7 @@ import model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,7 +97,20 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>
 	@Override
 	protected List<Resume> doGetAllSorted()
 	{
-	  return null;
+	  List<Resume> tmp = new ArrayList<>();
+
+	  for (File f: directory.listFiles())
+	    {
+		  try
+		    {
+			  tmp.add(doRead(f));
+		    }
+		  catch (IOException e)
+		    {
+		   	  throw new StorageException("IO error", f.getName(), e);
+		    }
+		}
+	  return tmp;
 	}
 
 	@Override
