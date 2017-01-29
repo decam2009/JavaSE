@@ -19,7 +19,7 @@ public abstract class AbstractStorage <SK> implements Storage
 
     protected abstract void doSave(Resume r, SK searchKey);
 
-	protected abstract void doUpdate(Resume oldR, SK searchKey);
+	protected abstract void doUpdate(Resume newR, SK searchKey);
 
 	protected abstract Resume doGet(SK searchKey);
 
@@ -73,7 +73,7 @@ public abstract class AbstractStorage <SK> implements Storage
 		SK searchKey = getSearchKey (uuid);
 	    if (!isExist (searchKey))
 		  {
-		    LOG.warning("Resume " + uuid + "doesn't exist");
+		    LOG.warning("Resume " + uuid + " doesn't exist");
 		    throw new NotExistStorageException(uuid);
 		  }
 	    return searchKey;

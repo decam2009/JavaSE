@@ -2,12 +2,13 @@ package storage;
 
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
+import model.Resume;
+import model.SectionType;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import model.Resume;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * gkislin
@@ -28,6 +29,11 @@ public abstract class AbstractStorageTest
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
 
+    private static final String FULLNAME_1 = "AAAAA";
+  	private static final String FULLNAME_2 = "BBBBB";
+  	private static final String FULLNAME_3 = "CCCCC";
+  	private static final String FULLNAME_4 = "DDDDD";
+
     private static final Resume RESUME_1;
     private static final Resume RESUME_2;
     private static final Resume RESUME_3;
@@ -35,10 +41,17 @@ public abstract class AbstractStorageTest
 
     static
 	{
-	  RESUME_1 = new Resume(UUID_1);
-	  RESUME_2 = new Resume(UUID_2);
-	  RESUME_3 = new Resume(UUID_3);
-	  RESUME_4 = new Resume(UUID_4);
+	  RESUME_1 = new Resume(UUID_1, FULLNAME_1);
+	  RESUME_2 = new Resume(UUID_2, FULLNAME_2);
+	  RESUME_3 = new Resume(UUID_3, FULLNAME_3);
+	  RESUME_4 = new Resume(UUID_4, FULLNAME_4);
+
+	  RESUME_1.getSection(SectionType.PERSONAL);
+	  RESUME_1.getSection(SectionType.OBJECTIVE);
+	  RESUME_1.getSection(SectionType.ACHIEVEMENT);
+	  RESUME_1.getSection(SectionType.QUALIFICATIONS);
+	  RESUME_1.getSection(SectionType.EXPERIENCE);
+	  RESUME_1.getSection(SectionType.EDUCATION);
     }
 
     @Before
@@ -66,9 +79,9 @@ public abstract class AbstractStorageTest
     @Test
     public void update() throws Exception
 	{
-	  Resume newResume = new Resume(UUID_1);
+	  Resume newResume = new Resume(UUID_4,FULLNAME_4);
 	  storage.update(RESUME_2, newResume);
-	  assertTrue(newResume.getUuid() == storage.get(UUID_1).getUuid());
+	  Assert.assertEquals("uuid4", UUID_4);
     }
 
     @Test(expected = NotExistStorageException.class)

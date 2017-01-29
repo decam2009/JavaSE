@@ -35,6 +35,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer>
 	 * @return array, contains only Resumes in storage (without null)
 	 */
 	public Resume[] getAll() {
+	  Arrays.sort(storage, 0, size);
 	  return Arrays.copyOfRange(storage, 0, size);
 	}
 
@@ -56,6 +57,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer>
 	}
 
 	public Resume doGet(Integer index) {
+	  Arrays.sort(storage,0,size);
 	  return storage[index];
 	}
 
