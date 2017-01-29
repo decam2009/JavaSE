@@ -3,7 +3,6 @@ package storage;
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.Resume;
-import model.SectionType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,13 +44,7 @@ public abstract class AbstractStorageTest
 	  RESUME_2 = new Resume(UUID_2, FULLNAME_2);
 	  RESUME_3 = new Resume(UUID_3, FULLNAME_3);
 	  RESUME_4 = new Resume(UUID_4, FULLNAME_4);
-
-	  RESUME_1.getSection(SectionType.PERSONAL);
-	  RESUME_1.getSection(SectionType.OBJECTIVE);
-	  RESUME_1.getSection(SectionType.ACHIEVEMENT);
-	  RESUME_1.getSection(SectionType.QUALIFICATIONS);
-	  RESUME_1.getSection(SectionType.EXPERIENCE);
-	  RESUME_1.getSection(SectionType.EDUCATION);
+	  RESUME_1.setContacts("+70000000000", "Zebra", "https://vk.com/id208233073", "","");
     }
 
     @Before
