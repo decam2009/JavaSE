@@ -40,13 +40,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer>
 	}
 
 	@Override
-	protected void doSave(Resume r, Integer index) {
-	  if (size == STORAGE_LIMIT) {
-		throw new StorageException("Storage overflow", r.getUuid());
-	  } else {
-		insertElement(r, index);
-		size++;
-	  }
+	protected void doSave(Resume r, Integer index)
+	{
+	  if (size == STORAGE_LIMIT)
+	    {
+		  throw new StorageException("Storage overflow", r.getUuid());
+	    }
+	    else
+	    {
+		  insertElement(r, index);
+		  size++;
+	    }
+	  Arrays.sort(storage,0,size);
 	}
 
 	@Override

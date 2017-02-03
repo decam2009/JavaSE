@@ -1,7 +1,12 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+
+import static model.DateUtil.NOW;
 
 /**
  * Created by BORIS on 27.01.17.
@@ -9,22 +14,18 @@ import java.util.Objects;
 public class Organization
   {
     private final Link homePage;
+    private final List<Position> positions;
 
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final String title;
-    private final String description;
+	public Organization(String name, String url, Position...positions)
+	  {
+	    this (new Link(name, url), Arrays.asList(positions));
+	  }
 
-	public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
-	  Objects.requireNonNull(startDate, "startDate can not be empty.");
-	  Objects.requireNonNull(endDate, "endDate can not be empty.");
-	  Objects.requireNonNull(title, "Title can not be empty.");
-	  this.homePage = new Link(name, url);
-	  this.startDate = startDate;
-	  this.endDate = endDate;
-	  this.title = title;
-	  this.description = description;
-	}
+	public Organization(Link homePage, List<Position> positions)
+	  {
+	    this.homePage = homePage;
+	    this.positions = positions;
+	  }
 
 	@Override
 	public boolean equals(Object o) {
@@ -33,32 +34,85 @@ public class Organization
 
 	  Organization that = (Organization) o;
 
-	  if (!homePage.equals(that.homePage)) return false;
-	  if (!startDate.equals(that.startDate)) return false;
-	  if (!endDate.equals(that.endDate)) return false;
-	  if (!title.equals(that.title)) return false;
-	  return description != null ? description.equals(that.description) : that.description == null;
+	  return homePage != null ? homePage.equals(that.homePage) : that.homePage == null;
 	}
 
 	@Override
 	public int hashCode() {
-	  int result = homePage.hashCode();
-	  result = 31 * result + startDate.hashCode();
-	  result = 31 * result + endDate.hashCode();
-	  result = 31 * result + title.hashCode();
-	  result = 31 * result + (description != null ? description.hashCode() : 0);
-	  return result;
+	  return homePage != null ? homePage.hashCode() : 0;
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 	  return "Organization{" +
 			  "homePage=" + homePage +
-			  ", startDate=" + startDate +
-			  ", endDate=" + endDate +
-			  ", title='" + title + '\'' +
-			  ", description='" + description + '\'' +
 			  '}';
 	}
+
+	/**
+	 * Created by BORIS on 01.02.17.
+	 */
+	public static class Position
+	  {
+		private final LocalDate startDate;
+		private final LocalDate endDate;
+		private final String title;
+		private final String description;
+
+		public Position(LocalDate startDate, LocalDate endDate, String title, String description)
+		  {
+			Objects.requireNonNull(startDate, "startDate can not be empty.");
+			Objects.requireNonNull(endDate, "endDate can not be empty.");
+			Objects.requireNonNull(title, "Title can not be empty.");
+			this.startDate = startDate;
+			this.endDate = endDate;
+			this.title = title;
+			this.description = description;
+		  }
+
+		public Position(int startYear, Month startMonth, String title, String description)
+		  {
+			this (DateUtil.of(startYear, startMonth), NOW, title, description);
+		  }
+
+		public Position(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description)
+		{
+		  this (DateUtil.of(startYear, startMonth), DateUtil.of(endYear, endMonth) , title, description);
+		}
+
+		@Override
+		public boolean equals(Object o)
+		  {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+
+			Position position = (Position) o;
+
+			if (!startDate.equals(position.startDate)) return false;
+			if (!endDate.equals(position.endDate)) return false;
+			if (!title.equals(position.title)) return false;
+			return description.equals(position.description);
+		  }
+
+		@Override
+		public int hashCode()
+		  {
+			int result = startDate.hashCode();
+			result = 31 * result + endDate.hashCode();
+			result = 31 * result + title.hashCode();
+			result = 31 * result + description.hashCode();
+			return result;
+		  }
+
+		@Override
+		public String toString()
+		  {
+			return "Position{" +
+					  "startDate=" + startDate +
+					  ", endDate=" + endDate +
+					  ", title='" + title + '\'' +
+					  ", description='" + description + '\'' +
+				  '}';
+		  }
+	  }
   }

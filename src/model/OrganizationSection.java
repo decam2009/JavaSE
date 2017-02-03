@@ -1,7 +1,7 @@
 package model;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -9,15 +9,20 @@ import java.util.Objects;
  */
 public class OrganizationSection extends Section
   {
-    private final Map <Organization, List <Organization>> organizations;
+    private final List <Organization> organizations;
 
-	public OrganizationSection (Map <Organization, List<Organization>> organizations)
+	public OrganizationSection (List<Organization> organizations)
 	  {
 		Objects.requireNonNull(organizations, "organization can not be null");
 	    this.organizations = organizations;
 	  }
 
-	public Map<Organization, List<Organization>> getOrganizations()
+	public OrganizationSection(Organization... organizations)
+	  {
+		this(Arrays.asList(organizations));
+      }
+
+	public List<Organization> getOrganizations()
 	  {
 	    return organizations;
 	  }

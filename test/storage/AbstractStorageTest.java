@@ -2,10 +2,12 @@ package storage;
 
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
-import model.Resume;
+import model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.time.Month;
 
 import static org.junit.Assert.assertEquals;
 
@@ -44,8 +46,19 @@ public abstract class AbstractStorageTest
 	  RESUME_2 = new Resume(UUID_2, FULLNAME_2);
 	  RESUME_3 = new Resume(UUID_3, FULLNAME_3);
 	  RESUME_4 = new Resume(UUID_4, FULLNAME_4);
-	  RESUME_1.setContacts("+70000000000", "Zebra", "https://vk.com/id208233073", "","");
-    }
+	  RESUME_1.addContact("+70000000000", "Zebra", "https://vk.com/id208233073", "","");
+	  RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
+	  RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
+	  RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievment1", "Achievmen2", "Achievment3"));
+	  RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
+	  RESUME_1.addSection(SectionType.EXPERIENCE,
+			  new OrganizationSection(new Organization("Organization1", "http://google.com",
+					  new Organization.Position(1996, Month.JANUARY, "position1", "content1"),
+					  new Organization.Position(2001, Month.JANUARY, 2018, Month.AUGUST, "position2", "content2"))));
+	  RESUME_1.addSection(SectionType.EDUCATION,
+			  new OrganizationSection(new Organization("University", "",
+					  new Organization.Position(1996, Month.JANUARY, "Student", "content1"))));
+	}
 
     @Before
     public void setUp() throws Exception

@@ -35,13 +35,18 @@ public class Resume implements Comparable<Resume>
 	  return uuid;
 	}
 
-	public void setContacts (String mobile, String skype, String vk, String linkedin, String github)
+	public void addContact (String mobile, String skype, String vk, String linkedin, String github)
 	  {
 	    contacts.put(ContactType.MOBILE, mobile);
 		contacts.put(ContactType.SKYPE, skype);
 		contacts.put(ContactType.VK, vk);
 		contacts.put(ContactType.LINKEDIN, linkedin);
 		contacts.put(ContactType.GITHUB, github);
+	  }
+
+	public void addSection (SectionType sectionType, Section section)
+	  {
+	    sections.put(sectionType, section);
 	  }
 
 	public String getContacts (ContactType type)
