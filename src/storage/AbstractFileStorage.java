@@ -3,8 +3,7 @@ package storage;
 import exception.StorageException;
 import model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,8 +25,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>
 		this.directory = directory;
 	  }
 
-	protected abstract void doWrite(Resume r, File file) throws IOException;
-	protected abstract Resume doRead(File file) throws IOException;
+	protected abstract void doWrite(Resume r, OutputStream file) throws IOException;
+	protected abstract Resume doRead(InputStream file) throws IOException;
 
 	@Override
 	public int size()
@@ -39,13 +38,19 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>
 	public void clear()
 	  {
 		for (File f: directory.listFiles())
-		  directory.delete();
+		  doDelete(f);
 	  }
 
 	@Override
 	public Resume[] getAll()
 	  {
-	    return new Resume[0];
+		Resume[] tmp = new Resume[directory.listFiles().length];
+		File[] files = directory.listFiles();
+		for (int i = 0; i <= files.length - 1; i++)
+		  {
+		    tmp[i] = doGet(files[i]);
+		  }
+	    return tmp;
 	  }
 
 	@Override
@@ -60,7 +65,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>
 		try
 		  {
 		    file.createNewFile();
-		    doWrite(r, file);
+		    doUpdate(r, file);
 		  }
 		catch (IOException e)
 		  {
@@ -73,7 +78,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>
 	  {
 		try
 		  {
-		    doWrite(oldR, file);
+		    doWrite(oldR, new BufferedOutputStream(new FileOutputStream(file)));
 		  }
 		catch (IOException e)
 		  {
@@ -86,7 +91,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>
 	  {
 		try
 		  {
-		    return doRead (file);
+		    return doRead (new BufferedInputStream(new FileInputStream(file)));
 		  }
 		catch (IOException e)
 		  {
@@ -103,7 +108,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>
 	    {
 		  try
 		    {
-			  tmp.add(doRead(f));
+			  tmp.add(doRead(new BufferedInputStream(new FileInputStream(f))));
 		    }
 		  catch (IOException e)
 		    {

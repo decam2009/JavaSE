@@ -8,7 +8,9 @@ import java.util.Objects;
  * Created by BORIS on 27.01.17.
  */
 public class ListSection extends Section {
-    private final List<String> items;
+
+  private static final long serialVersionUID = 1L;
+  private final List<String> items;
 
 	public ListSection(List<String> items)
 	  {

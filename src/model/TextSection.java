@@ -1,12 +1,15 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Created by BORIS on 27.01.17.
  */
-public class TextSection extends Section
+public class TextSection extends Section implements Serializable
 {
+
+  private static final long serialVersionUID = 1L;
   private final String content;
 
   @Override

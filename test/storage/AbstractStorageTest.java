@@ -7,17 +7,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.time.Month;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * gkislin
- * 12.06.2016
- */
 public abstract class AbstractStorageTest
 {
-
+    protected static final File STORAGE_DIR = new File ("./storage");
     protected Storage storage;
 
     protected AbstractStorageTest(Storage storage)
