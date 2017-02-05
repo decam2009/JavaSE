@@ -139,10 +139,10 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path>
 	  {
 	    Files.list(directory).forEach(new Consumer<Path>()
 		  {
+			int i = 0;
 		    @Override
 		    public void accept(Path path)
 			  {
-				int i = 0;
 				tmp[i] = doGet(path);
 				i++;
 		      }
