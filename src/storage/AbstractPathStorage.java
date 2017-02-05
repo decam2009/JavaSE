@@ -3,12 +3,14 @@ package storage;
 import exception.StorageException;
 import model.Resume;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -132,6 +134,24 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path>
 
   @Override
   public Resume[] getAll() {
-	return new Resume[0];
+	Resume[] tmp = new Resume[this.size()];
+	try
+	  {
+	    Files.list(directory).forEach(new Consumer<Path>()
+		  {
+		    @Override
+		    public void accept(Path path)
+			  {
+				int i = 0;
+				tmp[i] = doGet(path);
+				i++;
+		      }
+		  });
+	  }
+	catch (IOException e)
+	  {
+	    throw new StorageException("", null);
+	  }
+	return tmp;
   }
 }
