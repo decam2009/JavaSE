@@ -1,17 +1,20 @@
 package storage;
 
+import exception.StorageException;
 import model.Resume;
 
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by BORIS on 04.02.17.
  */
-public class AbstractPathStorage extends AbstractStorage<Path>
+public abstract class AbstractPathStorage extends AbstractStorage<Path>
 {
   protected Path directory;
 
@@ -25,29 +28,55 @@ public class AbstractPathStorage extends AbstractStorage<Path>
 	    }
     }
 
+  protected abstract void doWrite(Resume r, Path file) throws IOException;
+  protected abstract Resume doRead(Path file) throws IOException;
+
   @Override
   protected Path getSearchKey(String uuid)
     {
-	  return null;
+	  return directory.resolve(uuid);
     }
 
   @Override
   protected void doSave(Resume r, Path searchKey)
     {
-
-    }
+	  try
+	    {
+		  Path fileName = Paths.get(searchKey.toString());
+	      Files.createFile(fileName);
+	      doWrite(r, searchKey);
+	    }
+	    catch (IOException e)
+		{
+		 throw new StorageException("File already exists", null);
+	  }
+	}
 
   @Override
-  protected void doUpdate(Resume newR, Path searchKey)
+  protected void doUpdate(Resume oldR, Path searchKey)
     {
-
-    }
+	  try
+	    {
+		  doWrite(oldR, searchKey);
+	    }
+	  catch (IOException e)
+	    {
+	      throw new StorageException("", null);
+	    }
+	}
 
   @Override
   protected Resume doGet(Path searchKey)
     {
-	  return null;
-    }
+	  try
+	    {
+		  return doRead(searchKey);
+	    }
+	  catch (IOException e)
+	    {
+		  throw new StorageException("File can not be empty", null);
+	    }
+	}
 
   @Override
   protected List<Resume> doGetAllSorted()
@@ -58,24 +87,48 @@ public class AbstractPathStorage extends AbstractStorage<Path>
   @Override
   protected boolean isExist(Path searchKey)
     {
-	  return false;
+	  return Files.exists(searchKey);
     }
 
   @Override
   protected void doDelete(Path searchKey)
     {
+	  try
+	    {
+		  Files.delete(searchKey);
+	    }
+	  catch (IOException e)
+	    {
+		  throw new StorageException("File must exist", null);
+	    }
+	}
 
+  @Override
+  public int size()
+    {
+	  try
+	    {
+		 List<File> files =  Files.walk(directory).filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList());
+		 return files.size();
+	    }
+	  catch (IOException e)
+		{
+	  	  throw new StorageException("File mus exist", null);
+	    }
+	}
+
+  @Override
+  public void clear()
+    {
+	  try
+	    {
+		  Files.list(directory).forEach(this::doDelete);
+	    }
+	  catch (IOException e)
+	    {
+		  throw new StorageException("Path delete error", null);
+	    }
     }
-
-  @Override
-  public int size() {
-	return 0;
-  }
-
-  @Override
-  public void clear() {
-
-  }
 
   @Override
   public Resume[] getAll() {
