@@ -1,15 +1,14 @@
-package storage;
+package serializer;
 
 import exception.StorageException;
 import model.Resume;
-import serializer.StreamSerializer;
 
 import java.io.*;
 
 /**
  * Created by BORIS on 03.02.17.
  */
-public class ObjectStreamStorage implements StreamSerializer
+public class ObjectStreamSerializer implements StreamSerializer
   {
 
 	@Override

@@ -2,7 +2,10 @@ package storage;
 
 import exception.StorageException;
 import model.Resume;
+import serializer.StreamSerializer;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,22 +19,21 @@ import java.util.stream.Collectors;
 /**
  * Created by BORIS on 04.02.17.
  */
-public abstract class AbstractPathStorage extends AbstractStorage<Path>
+public class PathStorage extends AbstractStorage<Path>
 {
   protected Path directory;
+  private StreamSerializer streamSerializer;
 
-  public AbstractPathStorage(String dir)
+  public PathStorage(String dir, StreamSerializer streamSerializer)
     {
-	  this.directory = Paths.get(dir);
+	  this.streamSerializer = streamSerializer;
+      this.directory = Paths.get(dir);
 	  Objects.requireNonNull(directory, "Directory must not be null");
 	  if (!Files.isDirectory(directory) || !Files.isWritable(directory))
 	    {
 		  throw new IllegalArgumentException(dir + " is not a directory or is not writable");
 	    }
     }
-
-  protected abstract void doWrite(Resume r, Path file) throws IOException;
-  protected abstract Resume doRead(Path file) throws IOException;
 
   @Override
   protected Path getSearchKey(String uuid)
@@ -46,7 +48,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path>
 	    {
 		  Path fileName = Paths.get(searchKey.toString());
 	      Files.createFile(fileName);
-	      doWrite(r, searchKey);
+	      streamSerializer.doWrite(r, new BufferedOutputStream(Files.newOutputStream(searchKey)));
 	    }
 	    catch (IOException e)
 		{
@@ -59,7 +61,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path>
     {
 	  try
 	    {
-		  doWrite(oldR, searchKey);
+		  streamSerializer.doWrite(oldR, new BufferedOutputStream(Files.newOutputStream(searchKey)));
 	    }
 	  catch (IOException e)
 	    {
@@ -72,7 +74,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path>
     {
 	  try
 	    {
-		  return doRead(searchKey);
+		  return streamSerializer.doRead(new BufferedInputStream(Files.newInputStream(searchKey)));
 	    }
 	  catch (IOException e)
 	    {

@@ -2,6 +2,7 @@ package storage;
 
 import exception.StorageException;
 import model.Resume;
+import serializer.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,22 +12,21 @@ import java.util.Objects;
 /**
  * Created by BORIS on 29.01.17.
  */
-public abstract class AbstractFileStorage extends AbstractStorage<File>
+public class FileStorage extends AbstractStorage<File>
   {
 	private File directory;
+	protected StreamSerializer streamSerializer;
 
-    protected AbstractFileStorage(File directory)
+    protected FileStorage(File directory, StreamSerializer streamSerializer)
 	  {
 		Objects.requireNonNull(directory, "Directory must not be empty");
+		this.streamSerializer = streamSerializer;
 		if (!directory.isDirectory())
 		  throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
 		if (!directory.canRead() || !directory.canWrite())
 		  throw new IllegalArgumentException(directory.getAbsolutePath() + " no read/write privelege");
 		this.directory = directory;
 	  }
-
-	protected abstract void doWrite(Resume r, OutputStream file) throws IOException;
-	protected abstract Resume doRead(InputStream file) throws IOException;
 
 	@Override
 	public int size()
@@ -78,7 +78,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>
 	  {
 		try
 		  {
-		    doWrite(oldR, new BufferedOutputStream(new FileOutputStream(file)));
+		    streamSerializer.doWrite(oldR, new BufferedOutputStream(new FileOutputStream(file)));
 		  }
 		catch (IOException e)
 		  {
@@ -91,7 +91,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>
 	  {
 		try
 		  {
-		    return doRead (new BufferedInputStream(new FileInputStream(file)));
+		    return streamSerializer.doRead (new BufferedInputStream(new FileInputStream(file)));
 		  }
 		catch (IOException e)
 		  {
@@ -108,7 +108,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File>
 	    {
 		  try
 		    {
-			  tmp.add(doRead(new BufferedInputStream(new FileInputStream(f))));
+			  tmp.add(streamSerializer.doRead(new BufferedInputStream(new FileInputStream(f))));
 		    }
 		  catch (IOException e)
 		    {
