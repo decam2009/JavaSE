@@ -7,10 +7,15 @@ import java.util.Objects;
 /**
  * Created by BORIS on 27.01.17.
  */
+
 public class ListSection extends Section {
 
+  public ListSection()
+  {
+  }
+
   private static final long serialVersionUID = 1L;
-  private final List<String> items;
+  private List<String> items;
 
 	public ListSection(List<String> items)
 	  {

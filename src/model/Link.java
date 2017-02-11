@@ -1,15 +1,22 @@
 package model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Created by BORIS on 27.01.17.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Link implements Serializable
   {
-    private final String url;
-    private final String name;
+	public Link()
+	  {
+	  }
+
+	private String url;
+    private String name;
 
 	public Link(String url, String name)
 	{

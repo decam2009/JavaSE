@@ -1,5 +1,11 @@
 package model;
 
+import util.DateUtil;
+import util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -7,16 +13,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static model.DateUtil.NOW;
+import static util.DateUtil.NOW;
 
 /**
  * Created by BORIS on 27.01.17.
  */
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable
   {
+	public Organization()
+	  {
+	  }
+
 	private static final long serialVersionUID = 1L;
-    private final Link homePage;
-    private final List<Position> positions;
+    private Link homePage;
+    private List<Position> positions;
 
 	public Organization(String name, String url, Position...positions)
 	  {
@@ -54,12 +66,18 @@ public class Organization implements Serializable
 	/**
 	 * Created by BORIS on 01.02.17.
 	 */
+	@XmlAccessorType(XmlAccessType.FIELD)
 	public static class Position implements Serializable
 	  {
-		private final LocalDate startDate;
-		private final LocalDate endDate;
-		private final String title;
-		private final String description;
+		public Position()
+		{
+		}
+	    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+		private LocalDate startDate;
+		@XmlJavaTypeAdapter(LocalDateAdapter.class)
+		private LocalDate endDate;
+		private String title;
+		private String description;
 
 		public Position(LocalDate startDate, LocalDate endDate, String title, String description)
 		  {
