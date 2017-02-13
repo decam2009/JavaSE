@@ -42,17 +42,19 @@ public class Resume implements Comparable<Resume>, Serializable
 	}
 
 	public String getUuid()
-	{
-	  return uuid;
-	}
+   	  {
+	    return uuid;
+	  }
 
-	public void addContact (String mobile, String skype, String vk, String linkedin, String github)
+	public String getFullName()
 	  {
-	    contacts.put(ContactType.MOBILE, mobile);
-		contacts.put(ContactType.SKYPE, skype);
-		contacts.put(ContactType.VK, vk);
-		contacts.put(ContactType.LINKEDIN, linkedin);
-		contacts.put(ContactType.GITHUB, github);
+	    return fullName;
+	  }
+
+
+	public void addContact (ContactType contactType, String value)
+	  {
+	    contacts.put(contactType, value);
 	  }
 
 	public void addSection (SectionType sectionType, Section section)
@@ -60,14 +62,14 @@ public class Resume implements Comparable<Resume>, Serializable
 	    sections.put(sectionType, section);
 	  }
 
-	public String getContacts (ContactType type)
+	public Map <ContactType, String> getContacts ()
 	{
-  	  return contacts.get(type);
+  	  return contacts;
 	}
 
-	public Section getSection (SectionType type)
+	public Map <SectionType, Section> getSections ()
 	{
-	  return sections.get(type);
+	  return sections;
 	}
 
 	@Override

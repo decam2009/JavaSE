@@ -44,7 +44,10 @@ public abstract class AbstractStorageTest
 	  RESUME_2 = new Resume(UUID_2, FULLNAME_2);
 	  RESUME_3 = new Resume(UUID_3, FULLNAME_3);
 	  RESUME_4 = new Resume(UUID_4, FULLNAME_4);
-	  RESUME_1.addContact("+70000000000", "Zebra", "https://vk.com/id208233073", "","");
+	  RESUME_1.addContact(ContactType.MOBILE, "79000000000");
+	  RESUME_1.addContact(ContactType.MAIL, "google@google.com");
+	  RESUME_1.addContact(ContactType.HOME_PAGE, "https://google.com");
+	  RESUME_1.addContact(ContactType.VK, "https://vk.com");
 	  RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
 	  RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
 	  RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievment1", "Achievmen2", "Achievment3"));
