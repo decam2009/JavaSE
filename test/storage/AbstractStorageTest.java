@@ -53,12 +53,12 @@ public abstract class AbstractStorageTest
 	  RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievment1", "Achievmen2", "Achievment3"));
 	  RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
 	  RESUME_1.addSection(SectionType.EXPERIENCE,
-			  new OrganizationSection(new Organization("Organization1", "http://google.com",
-					  new Organization.Position(1996, Month.JANUARY, "position1", "content1"),
-					  new Organization.Position(2001, Month.JANUARY, 2018, Month.AUGUST, "position2", "content2"))));
+			  new OrganizationSection(new Organization("Gazprom", "http://google.com",
+					  new Organization.Position(1996, Month.JANUARY, "Engeneer", "Programmer"),
+					  new Organization.Position(2001, Month.JANUARY, 2018, Month.AUGUST, "Boss", "IT"))));
 	  RESUME_1.addSection(SectionType.EDUCATION,
 			  new OrganizationSection(new Organization("University", "",
-					  new Organization.Position(1996, Month.JANUARY, "Student", "content1"))));
+					  new Organization.Position(1996, Month.JANUARY, "Student", "IT"))));
 	}
 
     @Before

@@ -68,6 +68,11 @@ public class Organization implements Serializable
 			  '}';
 	}
 
+	public Link getHomePage()
+	  {
+	    return homePage;
+	  }
+
 	/**
 	 * Created by BORIS on 01.02.17.
 	 */
@@ -138,6 +143,26 @@ public class Organization implements Serializable
 					  ", title='" + title + '\'' +
 					  ", description='" + description + '\'' +
 				  '}';
+		  }
+
+		public LocalDate getStartDate()
+		  {
+		    return startDate;
+		  }
+
+		public LocalDate getEndDate()
+		  {
+		    return endDate;
+		  }
+
+		public String getTitle()
+		  {
+		    return title;
+		  }
+
+		public String getDescription()
+		  {
+		    return description;
 		  }
 	  }
   }
