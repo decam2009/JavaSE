@@ -2,19 +2,20 @@ package storage;
 
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
-import model.*;
+import model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import util.Config;
 
 import java.io.File;
-import java.time.Month;
 
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest
 {
-    protected static final File STORAGE_DIR = new File ("./storage");
+    protected static final File STORAGE_DIR = Config.getInstance().getStorageDir();
+    //new File ("./storage");
     protected static final String STORAGE_PATH = "./storage";
     protected Storage storage;
 
@@ -44,7 +45,7 @@ public abstract class AbstractStorageTest
 	  RESUME_2 = new Resume(UUID_2, FULLNAME_2);
 	  RESUME_3 = new Resume(UUID_3, FULLNAME_3);
 	  RESUME_4 = new Resume(UUID_4, FULLNAME_4);
-	  RESUME_1.addContact(ContactType.MOBILE, "79000000000");
+	/*  RESUME_1.addContact(ContactType.MOBILE, "79000000000");
 	  RESUME_1.addContact(ContactType.MAIL, "google@google.com");
 	  RESUME_1.addContact(ContactType.HOME_PAGE, "https://google.com");
 	  RESUME_1.addContact(ContactType.VK, "https://vk.com");
@@ -58,7 +59,7 @@ public abstract class AbstractStorageTest
 					  new Organization.Position(2001, Month.JANUARY, 2018, Month.AUGUST, "Boss", "IT"))));
 	  RESUME_1.addSection(SectionType.EDUCATION,
 			  new OrganizationSection(new Organization("University", "",
-					  new Organization.Position(1996, Month.JANUARY, "Student", "IT"))));
+					  new Organization.Position(1996, Month.JANUARY, "Student", "IT"))));*/
 	}
 
     @Before
