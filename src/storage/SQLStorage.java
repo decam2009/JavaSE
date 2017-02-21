@@ -1,11 +1,14 @@
 package storage;
 
+import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import exception.StorageException;
 import model.Resume;
 import sql.ConnectionFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -14,6 +17,8 @@ import java.util.List;
 public class SQLStorage implements Storage
   {
 	public final ConnectionFactory connectionFactory;
+	private static final Comparator<Resume> RESUME_COMPARATOR = (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
+	private final List<Resume> resumeList = new ArrayList<>();
 
 	public SQLStorage(String dbUrl, String dbUser, String dbPassword)
 	  {
@@ -32,7 +37,7 @@ public class SQLStorage implements Storage
 		}
 		catch (SQLException e)
 		{
-		  throw new StorageException(e);
+		  throw new ExistStorageException(r.getUuid() + "already exists");
 		}
 
 	  }
@@ -58,14 +63,43 @@ public class SQLStorage implements Storage
 	}
 
 	@Override
-	public void delete(String uuid) {
-
-	}
+	public void delete(String uuid)
+	  {
+	    try (Connection conn = connectionFactory.getConnection();
+	          PreparedStatement ps = conn.prepareStatement("DELETE FROM resume WHERE uuid = ?"))
+		  {
+		    ps.setString(1, uuid);
+			ps.execute();
+			int k = ps.executeUpdate();
+			if (k == 0)
+			  {
+			    throw new NotExistStorageException("Not exist" + uuid);
+			  }
+		  }
+		catch (SQLException e)
+		  {
+		    throw new StorageException(e);
+		  }
+	  }
 
 	@Override
-	public int size() {
-	  return 0;
-	}
+	public int size()
+	  {
+		  try (Connection conn = connectionFactory.getConnection();
+				PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume",
+						               ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY))
+			{
+  				ResultSet rs = ps.executeQuery();
+  				rs.last();
+  				int rowCount = rs.getRow();
+  				rs.beforeFirst();
+  				return rowCount;
+			}
+		 catch (SQLException e)
+		   {
+		     throw new StorageException(e);
+		   }
+	  }
 
 	@Override
 	public void clear()
@@ -87,12 +121,50 @@ public class SQLStorage implements Storage
 	}
 
 	@Override
-	public List<Resume> getAllSorted() {
-	  return null;
-	}
+	public List<Resume> getAllSorted()
+	  {
+		  try (Connection conn = connectionFactory.getConnection();
+			   PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume"))
+			{
+			  ResultSet rs = ps.executeQuery();
+			  int rowCount = rs.getMetaData().getColumnCount();
+			  while (rs.next())
+			    {
+			      for (int i = 1; i <= rowCount; i++)
+				    {
+				      Resume r = new Resume(rs.getString("uuid"), rs.getString("full_name"));
+					  r.setUuid(r.getUuid().replace(" ", ""));
+				      resumeList.add(r);
+					}
+				}
+			}
+		 catch (SQLException e)
+	 	   {
+	  		  e.printStackTrace();
+		   }
+		 resumeList.sort(RESUME_COMPARATOR);
+		 return resumeList;
+	  }
 
 	@Override
-	public Resume[] getAll() {
-	  return new Resume[0];
-	}
+	public Resume[] getAll()
+	  {
+	    try (Connection conn = connectionFactory.getConnection();
+	         PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume"))
+		  {
+			ResultSet rs = ps.executeQuery();
+			while (rs.next())
+			  {
+				   Resume r = new Resume(rs.getString("uuid"), rs.getString("full_name"));
+				   r.setUuid(r.getUuid().replace(" ", ""));
+				   resumeList.add(r);
+			  }
+		  }
+		catch (SQLException e)
+		  {
+		    throw new StorageException(e);
+		  }
+		Resume [] resumeArr = new Resume[0];
+		return resumeList.toArray(resumeArr);
+	  }
   }
