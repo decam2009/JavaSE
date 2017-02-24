@@ -99,4 +99,9 @@ public class Resume implements Comparable<Resume>, Serializable
 	public int hashCode() {
 	  return Objects.hash(uuid, fullName, contacts, sections);
 	}
+
+	public void setUuid(String uuid)
+	{
+	  this.uuid = uuid;
+	}
   }

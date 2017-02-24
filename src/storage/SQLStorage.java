@@ -29,7 +29,7 @@ public class SQLStorage implements Storage
 	public void save(Resume r)
 	  {
 		try (Connection conn = connectionFactory.getConnection();
-			 PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?, ?)"))
+			 PreparedStatement preparedStatement = conn.prepareStatement( "INSERT INTO resume (uuid, full_name) VALUES (?, ?)"))
 		{
 		  preparedStatement.setString(1, r.getUuid());
 		  preparedStatement.setString(2, r.getFullName());
