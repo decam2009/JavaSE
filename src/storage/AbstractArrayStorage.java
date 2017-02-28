@@ -14,7 +14,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer>
   {
     protected static final int STORAGE_LIMIT = 10000;
     public Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
+    public int size = 0;
 
 	public int size()
 	  {
@@ -51,7 +51,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer>
 		  insertElement(r, index);
 		  size++;
 	    }
-	  Arrays.sort(storage,0,size);
+	  //Arrays.sort(storage,0,size);
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer>
 	}
 
 	public Resume doGet(Integer index) {
-	  Arrays.sort(storage,0,size);
+	  //Arrays.sort(storage,0,size);
 	  return storage[index];
 	}
 
@@ -74,6 +74,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer>
 	@Override
 	protected List<Resume> doGetAllSorted()
 	  {
+	    Arrays.sort(storage, 0, size);
 	    return Arrays.asList(storage);
 	  }
 
