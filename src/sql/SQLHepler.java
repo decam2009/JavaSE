@@ -1,6 +1,7 @@
 package sql;
 
 import exception.ExistStorageException;
+import exception.StorageException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,4 +36,27 @@ public class SQLHepler
 		 throw new ExistStorageException(null);
 	   }
 	 }
+
+	 public <T> T transactionalExecute (SQLTransaction<T> executor)
+	   {
+		 try (Connection conn = connectionFactory.getConnection())
+		   {
+		     try
+			   {
+			     conn.setAutoCommit(false);
+			     T res = executor.execute(conn);
+			     conn.commit();
+			     return res;
+			   }
+			 catch (SQLException e)
+			   {
+				 conn.rollback();
+				 throw ExceptionUtil.convertException(e);
+			   }
+		   }
+		 catch (SQLException e)
+		   {
+			 throw new StorageException(e);
+		   }
+	   }
   }
