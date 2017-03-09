@@ -1,8 +1,7 @@
 package storage;
 
 import exception.NotExistStorageException;
-import model.ContactType;
-import model.Resume;
+import model.*;
 import sql.SQLHepler;
 
 import java.sql.*;
@@ -36,13 +35,28 @@ public class SQLStorage implements Storage {
 		    ps.setString(2, r.getFullName());
 		    ps.execute();
 		  }
+
 		insertContact(conn, r);
-	    return null;
+
+	    try
+		  {
+		    insertSection (conn, r);
+		  }
+		catch (IllegalAccessException e)
+		  {
+		    e.printStackTrace();
+		  }
+		catch (InstantiationException e)
+		  {
+		    e.printStackTrace();
+	 	  }
+		return null;
       });
     }
 
   @Override
-  public Resume get(String uuid) {
+  public Resume get(String uuid)
+    {
 	return sqlHepler.execute("SELECT r.uuid, r.full_name, c.type, c.value FROM resume r , contact c " +
 								  "WHERE r.uuid = c.resume_uuid AND r.uuid = ?",
 	ps ->
@@ -52,6 +66,7 @@ public class SQLStorage implements Storage {
 	  if (!rs.next()) {
 		throw new NotExistStorageException(uuid);
 	  }
+
 	  Resume r = new Resume(uuid, rs.getString("full_name"));
 	  do
 	    {
@@ -139,7 +154,7 @@ public class SQLStorage implements Storage {
   @Override
   public Resume[] getAll()
     {
-	  sqlHepler.execute("SELECT * FROM resume", ps ->
+	  sqlHepler.execute("SELECT a.uuid, a.full_name, a.type, a.value FROM  (SELECT r.uuid, r.full_name, c.type, c.value FROM resume r, contact c WHERE r.uuid = c.resume_uuid) AS A UNION ALL (SELECT r.uuid, r.full_name, s.type, s.value FROM resume r, section s WHERE r.uuid = s.uuid_id)", ps ->
 	    {
 		  ResultSet rs = ps.executeQuery();
 	      while (rs.next())
@@ -150,7 +165,7 @@ public class SQLStorage implements Storage {
 		  }
 		  return resumeList;
 		});
-	  return resumeList.toArray(new Resume[0]);
+	  return  resumeList.toArray(new Resume[0]);
     }
 
   private void insertContact (Connection conn, Resume newR) throws SQLException
@@ -167,6 +182,34 @@ public class SQLStorage implements Storage {
 	  ps.executeBatch();
 	}
   }
+
+  private void insertSection(Connection conn, Resume r) throws SQLException, IllegalAccessException, InstantiationException {
+ 	  try(PreparedStatement ps = conn.prepareStatement("INSERT into section (uuid_id, type, value) VALUES (?, ?, ?)"))
+	  {
+	    for (Map.Entry<SectionType, Section> e : r.getSections().entrySet())
+		 {
+		   ps.setString(1, r.getUuid());
+		   ps.setString(2, e.getKey().name());
+		   Class classOfSection = e.getValue().getClass();
+		   if (classOfSection.equals(TextSection.class))
+		     {
+			   TextSection textSection = (TextSection) classOfSection.cast(e.getValue());
+			   ps.setString(3, textSection.getContent());
+			   ps.addBatch();
+		     }
+		   if (classOfSection.equals(ListSection.class))
+		     {
+		       ListSection listSection = (ListSection) classOfSection.cast(e.getValue());
+		       for (String s: listSection.getItems())
+			     {
+			       ps.setString(3, s);
+				   ps.addBatch();
+			     }
+			 }
+		 }
+	    ps.executeBatch();
+	  }
+    }
 
   private void deleteContact (Connection conn, Resume oldR)
   {

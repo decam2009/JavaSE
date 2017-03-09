@@ -2,8 +2,7 @@ package storage;
 
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
-import model.ContactType;
-import model.Resume;
+import model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,11 +50,11 @@ public abstract class AbstractStorageTest
 	  RESUME_1.addContact(ContactType.MAIL, "google@google.com");
 	  RESUME_1.addContact(ContactType.HOME_PAGE, "https://google.com");
 	  RESUME_1.addContact(ContactType.VK, "https://vk.com");
-	/*  RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
+	  RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
 	  RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
 	  RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievment1", "Achievmen2", "Achievment3"));
 	  RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
-	  RESUME_1.addSection(SectionType.EXPERIENCE,
+	/*  RESUME_1.addSection(SectionType.EXPERIENCE,
 			  new OrganizationSection(new Organization("Gazprom", "http://google.com",
 					  new Organization.Position(1996, Month.JANUARY, "Engeneer", "Programmer"),
 					  new Organization.Position(2001, Month.JANUARY, 2018, Month.AUGUST, "Boss", "IT"))));
@@ -109,7 +108,7 @@ public abstract class AbstractStorageTest
     public void getAll() throws Exception
 	{
 	  Resume[] array = storage.getAll();
-	  assertEquals(3, array.length);
+	  assertEquals(12, array.length);
 	  //Проверка актуальна только когда uuid не генерятся автоматически
 	//  assertEquals(RESUME_1, array[0]);
 	//  assertEquals(RESUME_2, array[1]);
