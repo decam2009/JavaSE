@@ -1,9 +1,13 @@
 package util;
 
+import storage.SQLStorage;
+import storage.Storage;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -11,13 +15,14 @@ import java.util.Properties;
  */
 public class Config {
 
-  private static final File PROPS = new File ("./config/resume.properties");
+  private static final File PROPS = new File (getHomeDir(), "./config/resume.properties");
   private static final Config INSTANCE = new Config();
-  private Properties prop = new Properties();
+  Properties prop = new Properties();
   private File storageDir;
   private String dbUrl;
   private String dbUser;
   private String dbPassword;
+  private Storage storage;
 
   public static Config getInstance()
     {
@@ -33,10 +38,15 @@ public class Config {
 	  dbUrl = prop.getProperty("db.url");
 	  dbUser = prop.getProperty("db.user");
 	  dbPassword = prop.getProperty("db.password");
+	  storage = new SQLStorage(dbUrl, dbUser, dbPassword);
 	}
 	catch (IOException e)
 	{
 	  throw new IllegalStateException("Invalid config file" + PROPS.getAbsolutePath());
+	}
+	catch (SQLException e)
+	{
+	  e.printStackTrace();
 	}
   }
 
@@ -59,4 +69,21 @@ public class Config {
     {
 	  return dbPassword;
     }
+
+  public Storage getStorage()
+  {
+	return storage;
+  }
+
+  private static File getHomeDir ()
+  {
+    String prop = System.getProperty("homeDir");
+    File homeDir = new File (prop == null? "." : prop);
+    if (!homeDir.isDirectory())
+	  {
+		throw new IllegalStateException(homeDir + "is not directory");
+	  }
+	return homeDir;
+  }
+
 }

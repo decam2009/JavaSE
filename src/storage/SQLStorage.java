@@ -6,7 +6,7 @@ import sql.SQLHepler;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +21,15 @@ public class SQLStorage implements Storage {
 
   public SQLStorage(String dbUrl, String dbUser, String dbPassword) throws SQLException
     {
+	  try {
+		Class.forName("org.postgresql.Driver");
+	  }
+	  catch (ClassNotFoundException e)
+	  {
+		throw new IllegalStateException(e);
+	  }
 	  sqlHepler = new SQLHepler(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
+
     }
 
   @Override
@@ -115,10 +123,10 @@ public class SQLStorage implements Storage {
   @Override
   public List<Resume> getAllSorted()
     {
-	  sqlHepler.execute("SELECT * FROM resume r, contact c WHERE  r.uuid = c.resume_uuid ORDER BY r.full_name, r.uuid", ps ->
+	  return sqlHepler.execute("SELECT * FROM resume r LEFT JOIN contact c ON r.uuid=c.resume_uuid ORDER BY r.full_name", ps ->
 	    {
 	      ResultSet rs = ps.executeQuery();
-	      Map <String, Resume> map = new HashMap<>();
+	      Map <String, Resume> map = new LinkedHashMap<>();
 	      while (rs.next())
 		    {
 		      String uuid = rs.getString("uuid");
@@ -132,7 +140,6 @@ public class SQLStorage implements Storage {
 			}
 		  return new ArrayList<> (map.values());
 	    });
-	  return null;
     }
 
   @Override

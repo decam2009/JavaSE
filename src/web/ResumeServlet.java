@@ -1,5 +1,11 @@
 package web;
 
+import model.ContactType;
+import model.Resume;
+import storage.Storage;
+import util.Config;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,12 +18,21 @@ import java.io.IOException;
 public class ResumeServlet extends HttpServlet
   {
 
+    private Storage storage;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
 
     }
 
-  protected void doGet(HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	public void init(ServletConfig config) throws ServletException
+	  {
+	    super.init(config);
+	    storage = Config.getInstance().getStorage();
+	  }
+
+	protected void doGet(HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws ServletException, IOException {
 
 	  request.setCharacterEncoding("UTF-8");
       response.setCharacterEncoding("UTF-8");
@@ -38,15 +53,23 @@ public class ResumeServlet extends HttpServlet
 		  response.getWriter().print("<tr>");
 		  response.getWriter().print("<td>UUID_ID</td>");
 		  response.getWriter().print("<td>FULL_NAME</td>");
-		  response.getWriter().print("<td>CONTACT_TYPE</td>");
-		  response.getWriter().print("<td>CONTACT_VALUE</td>");
+		  response.getWriter().print("<td>MOBILE</td>");
+		  response.getWriter().print("<td>MAIL</td>");
+		  response.getWriter().print("<td>VK</td>");
+		  response.getWriter().print("<td>HOME_PAGE</td>");
+		  response.getWriter().print("<td></td>");
 		  response.getWriter().print("</tr>");
-		  response.getWriter().print("<tr>");
-		  response.getWriter().print("<td>1</td>");
-		  response.getWriter().print("<td>A</td>");
-		  response.getWriter().print("<td>CT</td>");
-		  response.getWriter().print("<td>CV</td>");
-		  response.getWriter().print("</tr>");
+		  for (Resume r: storage.getAllSorted())
+		    {
+			  response.getWriter().print("<tr>");
+			  response.getWriter().print("<td><a href = resume?uuid=" + r.getUuid() + ">" + r.getUuid() + "</a></td>");
+			  response.getWriter().print("<td>" + r.getFullName() + "</td>");
+			  response.getWriter().print("<td>" + r.getContact(ContactType.MOBILE) + "</td>");
+			  response.getWriter().print("<td>" + r.getContact(ContactType.MAIL) + "</td>");
+			  response.getWriter().print("<td><a href = " + r.getContact(ContactType.VK) + ">" + r.getContact(ContactType.VK) + "</a></td>");
+			  response.getWriter().print("<td>" + r.getContact(ContactType.HOME_PAGE) + "</td>");
+			  response.getWriter().print("</tr>");
+		    }
 		  response.getWriter().print("<table>");
 		  response.getWriter().print("</table>");
 		  response.getWriter().print("</body>");
