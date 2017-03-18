@@ -22,7 +22,7 @@
             <jsp:useBean id="resume" type="model.Resume"/>
             <tr>
               <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
-              <td><%=ContactType.MAIL.toHtml(resume.getContact(ContactType.MAIL))%></td>
+                <td><a href="mailto:${resume.getContact(ContactType.MAIL)}">${resume.getContact(ContactType.MAIL)}</a></td>
               <td><a href="resume?uuid=${resume.uuid}&action=delete">Delete</a></td>
               <td><a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></td>
             </tr>

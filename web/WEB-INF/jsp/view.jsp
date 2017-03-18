@@ -10,12 +10,15 @@
 <body>
 <section>
 <h2>${resume.fullName}&nbsp;<a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></h2>
+    <h3>Контакты:</h3>
     <p>
-      <c:forEach var="contactEntry" items="${resume.contacts}">
+        <c:forEach var="contactEntry" items="${resume.contacts}">
           <jsp:useBean id="contactEntry" type="java.util.Map.Entry<model.ContactType, java.lang.String>"/>
           <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br>
        </c:forEach>
     </p>
+    <h3>Персональная информация и опыт работы:</h3>
+
 </section>
 </body>
 </html>

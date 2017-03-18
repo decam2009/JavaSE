@@ -13,7 +13,7 @@ public enum ContactType
 		@Override
 		public String toHtml0(String value)
 		  {
-		    return "<a href='skype: " + value + "'>" + value + "</a>";
+		    return "SKYPE: " + "<a href='skype: " + value + "'>" + value + "</a>";
 		  }
 	  },
 	MAIL("Почта")
@@ -21,7 +21,7 @@ public enum ContactType
 		@Override
 		public String toHtml0(String value)
 		{
-		  return "<a href='mailto: " + value + "'>" + value + "</a>";
+		  return "Электронная почта: " +  "<a href='mailto: " + value + "'>" + value + "</a>";
 		}
 
 	  },
