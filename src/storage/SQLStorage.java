@@ -65,8 +65,7 @@ public class SQLStorage implements Storage {
   @Override
   public Resume get(String uuid)
     {
-	return sqlHepler.execute("SELECT r.uuid, r.full_name, c.type, c.value FROM resume r , contact c " +
-								  "WHERE r.uuid = c.resume_uuid AND r.uuid = ?",
+	return sqlHepler.execute("SELECT r.uuid, r.full_name, c.type, c.value FROM resume r LEFT JOIN contact c on r.uuid=c.resume_uuid WHERE  r.uuid = ?",
 	ps ->
 	{
 	  ps.setString(1, uuid);

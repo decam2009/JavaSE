@@ -8,8 +8,23 @@ public enum ContactType
     PHONE ("Телефон"),
     MOBILE ("Мобильный телефон"),
     HOME_PHONE("Домашний телефон"),
-	SKYPE("Скайп"),
-	MAIL("Почта"),
+	SKYPE("Скайп")
+	  {
+		@Override
+		public String toHtml0(String value)
+		  {
+		    return "<a href='skype: " + value + "'>" + value + "</a>";
+		  }
+	  },
+	MAIL("Почта")
+	  {
+		@Override
+		public String toHtml0(String value)
+		{
+		  return "<a href='mailto: " + value + "'>" + value + "</a>";
+		}
+
+	  },
 	LINKEDIN("Профиль LynkedIn"),
 	GITHUB("Профиль Github"),
 	STACKOVERFLOW("Профиль Stackoverflow"),
@@ -29,4 +44,14 @@ public enum ContactType
 	{
 	  return title;
 	}
+
+	public String toHtml0 (String value)
+	{
+	  return title + ":" + value;
+	}
+
+	public String toHtml (String value)
+	  {
+	    return (value == null) ? "" : toHtml0(value);
+	  }
   }
