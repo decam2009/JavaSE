@@ -11,6 +11,7 @@
 </head>
 <body>
 <section>
+    <a href="resume?action=add"><img src="img/addverysmall.png"></a>
     <table border="1" cellpadding="8" cellspacing="8">
         <tr>
             <th>Имя</th>

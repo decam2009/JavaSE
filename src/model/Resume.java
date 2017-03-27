@@ -4,7 +4,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.*;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Created by BORIS on 19.01.17.
@@ -13,7 +16,20 @@ import java.util.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable
   {
-	public Resume()
+
+    public static final Resume EMPTY = new Resume();
+
+    static
+	  {
+	    EMPTY.setSection(SectionType.OBJECTIVE, TextSection.EMPTY);
+		EMPTY.setSection(SectionType.PERSONAL, TextSection.EMPTY);
+		EMPTY.setSection(SectionType.ACHIEVEMENT, ListSection.EMPTY);
+		EMPTY.setSection(SectionType.QUALIFICATIONS, ListSection.EMPTY);
+		EMPTY.setSection(SectionType.EXPERIENCE, new OrganizationSection(Organization.EMPTY));
+		EMPTY.setSection(SectionType.EDUCATION, new OrganizationSection(Organization.EMPTY));
+	  }
+
+    public Resume()
 	  {
 	  }
 

@@ -9,6 +9,8 @@ import java.util.Objects;
 public class TextSection extends Section implements Serializable
 {
 
+  public static final Section EMPTY = new TextSection();
+
   public TextSection()
     {
     }

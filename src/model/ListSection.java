@@ -10,6 +10,8 @@ import java.util.Objects;
 
 public class ListSection extends Section {
 
+  public static final Section EMPTY = new ListSection("");
+
   public ListSection()
   {
   }
