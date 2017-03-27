@@ -29,6 +29,7 @@ public class Organization implements Serializable
 	private static final long serialVersionUID = 1L;
     private Link homePage;
     private List<Position> positions;
+    public static final Organization EMPTY = new Organization("","", Position.EMPTY);
 
 	public Organization(String name, String url, Position...positions)
 	  {
@@ -79,7 +80,8 @@ public class Organization implements Serializable
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static class Position implements Serializable
 	  {
-		public Position()
+		public static final Position EMPTY = new Position();
+	    public Position()
 		{
 		}
 	    @XmlJavaTypeAdapter(LocalDateAdapter.class)

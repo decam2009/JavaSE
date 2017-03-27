@@ -1,8 +1,12 @@
 package storage;
 
 import exception.NotExistStorageException;
-import model.*;
+import model.ContactType;
+import model.Resume;
+import model.Section;
+import model.SectionType;
 import sql.SQLHepler;
+import util.JsonParser;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -44,20 +48,8 @@ public class SQLStorage implements Storage {
 		    ps.execute();
 		  }
 
-		insertContact(conn, r);
-
-	    try
-		  {
-		    insertSection (conn, r);
-		  }
-		catch (IllegalAccessException e)
-		  {
-		    e.printStackTrace();
-		  }
-		catch (InstantiationException e)
-		  {
-		    e.printStackTrace();
-	 	  }
+		insertContacts(conn, r);
+	    insertSections(conn, r);
 		return null;
       });
     }
@@ -65,23 +57,44 @@ public class SQLStorage implements Storage {
   @Override
   public Resume get(String uuid)
     {
-	return sqlHepler.execute("SELECT r.uuid, r.full_name, c.type, c.value FROM resume r LEFT JOIN contact c on r.uuid=c.resume_uuid WHERE  r.uuid = ?",
-	ps ->
-	{
-	  ps.setString(1, uuid);
-	  ResultSet rs = ps.executeQuery();
-	  if (!rs.next()) {
-		throw new NotExistStorageException(uuid);
-	  }
 
-	  Resume r = new Resume(uuid, rs.getString("full_name"));
-	  do
-	    {
-		  addContact(rs, r);
-		} while (rs.next());
-	  return r;
-	});
-  }
+      return sqlHepler.transactionalExecute(conn ->
+	  {
+	   Resume r;
+	   try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume WHERE uuid=?"))
+	     {
+		   ps.setString(1, uuid);
+		   ResultSet rs = ps.executeQuery();
+		   if (!rs.next())
+		     {
+		       throw new NotExistStorageException(uuid);
+		     }
+		   r = new Resume(uuid, rs.getString("full_name"));
+	     }
+
+	     try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact WHERE resume_uuid=?"))
+		 {
+		  ps.setString(1, uuid);
+		  ResultSet rs = ps.executeQuery();
+		  while (rs.next())
+		    {
+		      addContact(rs, r);
+			}
+		 }
+
+		try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section WHERE uuid_id=?"))
+		{
+		  ps.setString(1, uuid);
+		  ResultSet rs = ps.executeQuery();
+		  while (rs.next())
+		  {
+			addSection(rs, r);
+		  }
+		}
+
+		return r;
+	  });
+    }
 
   @Override
   public void update(Resume oldR, Resume newR)
@@ -100,7 +113,9 @@ public class SQLStorage implements Storage {
 			    }
 			}
  		    deleteContact (conn, oldR);
-		    insertContact (conn, newR);
+	        deleteSection (conn, oldR);
+		    insertContacts(conn, newR);
+		    insertSections(conn, newR);
 			return null;
 		});
     }
@@ -122,23 +137,43 @@ public class SQLStorage implements Storage {
   @Override
   public List<Resume> getAllSorted()
     {
-	  return sqlHepler.execute("SELECT * FROM resume r LEFT JOIN contact c ON r.uuid=c.resume_uuid ORDER BY r.full_name", ps ->
-	    {
-	      ResultSet rs = ps.executeQuery();
-	      Map <String, Resume> map = new LinkedHashMap<>();
-	      while (rs.next())
+	  return sqlHepler.transactionalExecute(conn ->
+	  {
+		Map <String, Resume> resumes = new LinkedHashMap<>();
+		try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r ORDER BY r.full_name, uuid"))
+		{
+		  ResultSet rs = ps.executeQuery();
+		  while (rs.next())
 		    {
 		      String uuid = rs.getString("uuid");
-		      Resume resume = map.get(uuid);
-		      if (resume == null)
-			    {
-			      resume = new Resume(uuid, rs.getString("full_name"));
-			      map.put(uuid, resume);
-				}
-			  addContact (rs, resume);
+		      resumes.put(uuid, new Resume(uuid, rs.getString ("full_name")));
 			}
-		  return new ArrayList<> (map.values());
-	    });
+
+		}
+
+		try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact"))
+		{
+		  ResultSet rs = ps.executeQuery();
+		  while (rs.next())
+		  {
+		    Resume r = resumes.get (rs.getString("resume_uuid"));
+		    addContact(rs, r);
+		  }
+		}
+
+		try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section"))
+		{
+		  ResultSet rs = ps.executeQuery();
+		  while (rs.next())
+		  {
+			Resume r = resumes.get (rs.getString("uuid_id"));
+			addSection (rs, r);
+		  }
+		}
+
+		return new ArrayList<>(resumes.values());
+	  }
+	  );
     }
 
   @Override
@@ -160,7 +195,7 @@ public class SQLStorage implements Storage {
   @Override
   public Resume[] getAll()
     {
-	  sqlHepler.execute("SELECT a.uuid, a.full_name, a.type, a.value FROM  (SELECT r.uuid, r.full_name, c.type, c.value FROM resume r, contact c WHERE r.uuid = c.resume_uuid) AS A UNION ALL (SELECT r.uuid, r.full_name, s.type, s.value FROM resume r, section s WHERE r.uuid = s.uuid_id)", ps ->
+	  sqlHepler.execute("SELECT a.uuid, a.full_name, a.type, a.value FROM  (SELECT r.uuid, r.full_name, c.type, c.value FROM resume r, contact c WHERE r.uuid = c.resume_uuid) AS A UNION ALL (SELECT r.uuid, r.full_name, s.type, s.content FROM resume r, section s WHERE r.uuid = s.uuid_id)", ps ->
 	    {
 		  ResultSet rs = ps.executeQuery();
 	      while (rs.next())
@@ -174,7 +209,7 @@ public class SQLStorage implements Storage {
 	  return  resumeList.toArray(new Resume[0]);
     }
 
-  private void insertContact (Connection conn, Resume newR) throws SQLException
+  private void insertContacts(Connection conn, Resume newR) throws SQLException
   {
 	try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (type, value, resume_uuid) VALUES (?, ?, ?)"))
 	{
@@ -189,49 +224,60 @@ public class SQLStorage implements Storage {
 	}
   }
 
-  private void insertSection(Connection conn, Resume r) throws SQLException, IllegalAccessException, InstantiationException {
- 	  try(PreparedStatement ps = conn.prepareStatement("INSERT into section (uuid_id, type, value) VALUES (?, ?, ?)"))
-	  {
-	    for (Map.Entry<SectionType, Section> e : r.getSections().entrySet())
-		 {
-		   ps.setString(1, r.getUuid());
-		   ps.setString(2, e.getKey().name());
-		   Class classOfSection = e.getValue().getClass();
-		   if (classOfSection.equals(TextSection.class))
-		     {
-			   TextSection textSection = (TextSection) classOfSection.cast(e.getValue());
-			   ps.setString(3, textSection.getContent());
-			   ps.addBatch();
-		     }
-		   if (classOfSection.equals(ListSection.class))
-		     {
-		       ListSection listSection = (ListSection) classOfSection.cast(e.getValue());
-		       for (String s: listSection.getItems())
-			     {
-			       ps.setString(3, s);
-				   ps.addBatch();
-			     }
-			 }
-		 }
-	    ps.executeBatch();
-	  }
-    }
-
-  private void deleteContact (Connection conn, Resume oldR)
+  private void insertSections(Connection conn, Resume r) throws SQLException
   {
-	sqlHepler.execute("DELETE FROM contact WHERE resume_uuid = ?", ps -> {
-	  ps.setString(1, oldR.getUuid());
-	  ps.execute();
-	  return null;
-	});
+	try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (uuid_id, type, content) VALUES (?, ?, ?)"))
+	{
+	  for (Map.Entry<SectionType, Section> e : r.getSections().entrySet())
+	  {
+		ps.setString(1, r.getUuid());
+		ps.setString(2, e.getKey().name());
+		Section section = e.getValue();
+		ps.setString(3, JsonParser.write(section, Section.class));
+		ps.addBatch();
+	  }
+	  ps.executeBatch();
+	}
   }
+
+  private void deleteContact (Connection conn, Resume oldR) throws SQLException
+  {
+	deleteAttributes(conn, oldR, "DELETE FROM contact WHERE resume_uuid = ?");
+  }
+
+  private void deleteSection(Connection conn, Resume oldR) throws SQLException
+  {
+    deleteAttributes(conn, oldR, "DELETE FROM section WHERE uuid_id = ?");
+  }
+
+
+  private void deleteAttributes(Connection conn, Resume oldR, String sql) throws SQLException
+  {
+	try (PreparedStatement ps = conn.prepareStatement(sql))
+	{
+	  ps.setString (1, oldR.getUuid());
+	  ps.execute();
+	}
+  }
+
 
   private void addContact (ResultSet rs, Resume r) throws SQLException
   {
-	String value = rs.getString("value");
+	String type = rs.getString("type");
+    String value = rs.getString("value");
 	if (value != null)
 	  {
-		r.addContact(ContactType.valueOf(rs.getString("type")), rs.getString("value"));
+		r.setContact(ContactType.valueOf(type), value);
+	  }
+  }
+
+  private void addSection(ResultSet rs, Resume r) throws SQLException
+  {
+    String content = rs.getString("content");
+    if (content != null)
+	  {
+	    SectionType type = SectionType.valueOf(rs.getString("type"));
+	    r.setSection(type, JsonParser.read(content, Section.class));
 	  }
   }
 

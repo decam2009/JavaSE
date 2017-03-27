@@ -4,10 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by BORIS on 19.01.17.
@@ -52,12 +49,12 @@ public class Resume implements Comparable<Resume>, Serializable
 	  }
 
 
-	public void addContact (ContactType contactType, String value)
+	public void setContact(ContactType contactType, String value)
 	  {
 	    contacts.put(contactType, value);
 	  }
 
-	public void addSection (SectionType sectionType, Section section)
+	public void setSection(SectionType sectionType, Section section)
 	  {
 	    sections.put(sectionType, section);
 	  }
@@ -75,6 +72,11 @@ public class Resume implements Comparable<Resume>, Serializable
 	public Map <SectionType, Section> getSections ()
 	{
 	  return sections;
+	}
+
+	public Section getSection (SectionType type)
+	{
+	  return sections.get(type);
 	}
 
 	@Override

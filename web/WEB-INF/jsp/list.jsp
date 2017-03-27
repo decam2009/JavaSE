@@ -23,8 +23,8 @@
             <tr>
               <td><a href="resume?uuid=${resume.uuid}&action=view">${resume.fullName}</a></td>
                 <td><a href="mailto:${resume.getContact(ContactType.MAIL)}">${resume.getContact(ContactType.MAIL)}</a></td>
-              <td><a href="resume?uuid=${resume.uuid}&action=delete">Delete</a></td>
-              <td><a href="resume?uuid=${resume.uuid}&action=edit">Edit</a></td>
+              <td><a href="resume?uuid=${resume.uuid}&action=delete"><img src="img/deleteverysmall.png"></a></td>
+              <td><a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/editverysmall.png"></a></td>
             </tr>
         </c:forEach>
     </table>

@@ -7,8 +7,8 @@ import java.io.Serializable;
  */
 public enum SectionType implements Serializable
   {
-	PERSONAL ("Личные качества"),
 	OBJECTIVE ("Позиция"),
+    PERSONAL ("Личные качества"),
 	ACHIEVEMENT ("Достижения"),
 	QUALIFICATIONS ("Квалификация"),
 	EXPERIENCE ("Опыт работы"),

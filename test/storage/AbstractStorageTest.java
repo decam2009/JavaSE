@@ -9,6 +9,7 @@ import org.junit.Test;
 import util.Config;
 
 import java.io.File;
+import java.time.Month;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -46,21 +47,21 @@ public abstract class AbstractStorageTest
 	  RESUME_2 = new Resume(UUID_2, FULLNAME_2);
 	  RESUME_3 = new Resume(UUID_3, FULLNAME_3);
 	  RESUME_4 = new Resume(UUID_4, FULLNAME_4);
-	  RESUME_1.addContact(ContactType.MOBILE, "79000000000");
-	  RESUME_1.addContact(ContactType.MAIL, "google@google.com");
-	  RESUME_1.addContact(ContactType.HOME_PAGE, "https://google.com");
-	  RESUME_1.addContact(ContactType.VK, "https://vk.com");
-	  RESUME_1.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
-	  RESUME_1.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
-	  RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListSection("Achievment1", "Achievmen2", "Achievment3"));
-	  RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
-	/*  RESUME_1.addSection(SectionType.EXPERIENCE,
-			  new OrganizationSection(new Organization("Gazprom", "http://google.com",
+	  RESUME_1.setContact(ContactType.MOBILE, "79000000000");
+	  RESUME_1.setContact(ContactType.MAIL, "google@google.com");
+	  RESUME_1.setContact(ContactType.HOME_PAGE, "https://google.com");
+	  RESUME_1.setContact(ContactType.VK, "https://vk.com");
+	  RESUME_1.setSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
+	  RESUME_1.setSection(SectionType.PERSONAL, new TextSection("Personal data"));
+	  RESUME_1.setSection(SectionType.ACHIEVEMENT, new ListSection("Achievment1", "Achievmen2", "Achievment3"));
+	  RESUME_1.setSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
+	  RESUME_1.setSection(SectionType.EXPERIENCE,
+			  new OrganizationSection(new Organization("Gazprom", "http://gazprom.ru",
 					  new Organization.Position(1996, Month.JANUARY, "Engeneer", "Programmer"),
 					  new Organization.Position(2001, Month.JANUARY, 2018, Month.AUGUST, "Boss", "IT"))));
-	  RESUME_1.addSection(SectionType.EDUCATION,
+	  RESUME_1.setSection(SectionType.EDUCATION,
 			  new OrganizationSection(new Organization("University", "",
-					  new Organization.Position(1996, Month.JANUARY, "Student", "IT"))));*/
+					  new Organization.Position(1996, Month.JANUARY, 2001, Month.JUNE, "Student", "IT"))));
 	}
 
     @Before
@@ -90,10 +91,10 @@ public abstract class AbstractStorageTest
 	{
 	  Resume newResume = new Resume(UUID_4,FULLNAME_4);
 	  newResume.setUuid(UUID_1);
-	  newResume.addContact(ContactType.MOBILE, "79000000000");
-	  newResume.addContact(ContactType.MAIL, "google@mail.ru");
-	  newResume.addContact(ContactType.HOME_PAGE, "https://mail.ru");
-	  newResume.addContact(ContactType.VK, "https://fb.com");
+	  newResume.setContact(ContactType.MOBILE, "79000000000");
+	  newResume.setContact(ContactType.MAIL, "google@mail.ru");
+	  newResume.setContact(ContactType.HOME_PAGE, "https://mail.ru");
+	  newResume.setContact(ContactType.VK, "https://fb.com");
 	  storage.update(RESUME_1, newResume);
 	  Assert.assertTrue(newResume.equals(storage.get(UUID_1)));
     }
@@ -108,7 +109,7 @@ public abstract class AbstractStorageTest
     public void getAll() throws Exception
 	{
 	  Resume[] array = storage.getAll();
-	  assertEquals(12, array.length);
+	  assertEquals(8, array.length);
 	  //Проверка актуальна только когда uuid не генерятся автоматически
 	//  assertEquals(RESUME_1, array[0]);
 	//  assertEquals(RESUME_2, array[1]);

@@ -18,7 +18,7 @@ public class Link implements Serializable
 	private String url;
     private String name;
 
-	public Link(String url, String name)
+	public Link(String name, String url)
 	{
 	  Objects.requireNonNull(name,"Name can not be empty.");
 	  this.url = url;

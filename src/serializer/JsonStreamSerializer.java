@@ -26,7 +26,7 @@ public class JsonStreamSerializer implements StreamSerializer
 	  {
 		try (Reader r = new InputStreamReader(is, StandardCharsets.UTF_8))
 		{
-		  return JsonParser.Reader(r, Resume.class);
+		  return JsonParser.read(r, Resume.class);
 		}
 	  }
   }
